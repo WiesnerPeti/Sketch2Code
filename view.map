@@ -1,0 +1,5 @@
+{
+  "MSBitmapLayer" : "UIImageView",
+  "MSTextLayer" : "UILabel",
+  "MSShapeGroup" : "UIView"
+}
