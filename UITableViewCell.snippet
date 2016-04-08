@@ -1,32 +1,40 @@
 {
   "UITableViewCell" :{
     "header" : [
-    "#import <UIKit/UIKit.h>,"
-    "@interface <CLASS_NAME> : UITableViewCell,"
-    "{
-    "    <SUBVIEW_DECLARATION>""
-    "}
-    "@end"
+      "#import <UIKit/UIKit.h>",
+      "@interface <CLASS_NAME> : UITableViewCell",
+      "{",
+      "    <SUBVIEW_DECLARATION>",
+      "}",
+      "@end"
     ],
-    "implementation" : [
-    '#import "<CLASS_NAME>.h"'
-    "@implementation <CLASS_NAME>"
-    "- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier"
-    "{"
-    "    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];"
-    "    if(self)"
-    "    {"
-    "      <SUBVIEW_INIT>"
-    "    }"
-    "    return self;"
-    "}"
-    "- (void)layoutSubviews"
-    "{"
-    "    [super layoutSubviews];"
-    ""
-    "    <SUBVIEW_LAYOUT>"
-    "}"
-    "@end"
-    ]
+    "implementation" : {
+      "imports":[
+        "#import \"<CLASS_NAME>.h\""
+      ],
+      "implementation_tag" :[
+        "@implementation <CLASS_NAME>",
+        "@end"
+      ],
+      "init":[
+        "- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier",
+        "{",
+        "    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];",
+        "    if(self)",
+        "    {",
+        "      <SUBVIEW_INIT>",
+        "    }",
+        "    return self;",
+        "}"
+      ],
+      "layout":[
+          "- (void)layoutSubviews",
+          "{",
+          "    [super layoutSubviews];",
+          "",
+          "    <SUBVIEW_LAYOUT>",
+          "}"
+      ]
+    }
   }
 }
