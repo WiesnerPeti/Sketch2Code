@@ -1,13 +1,17 @@
 {
   "UITableViewCell" :{
-    "header" : [
-      "#import <UIKit/UIKit.h>",
+    "header" : {
+    "imports":[
+      "#import <UIKit/UIKit.h>"
+    ],
+    "interface_tag":[
       "@interface <CLASS_NAME> : UITableViewCell",
       "{",
       "    <SUBVIEW_DECLARATION>",
       "}",
       "@end"
-    ],
+    ]
+    },
     "implementation" : {
       "imports":[
         "#import \"<CLASS_NAME>.h\""
@@ -16,7 +20,7 @@
         "@implementation <CLASS_NAME>",
         "@end"
       ],
-      "init":[
+      "create":[
         "- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier",
         "{",
         "    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];",

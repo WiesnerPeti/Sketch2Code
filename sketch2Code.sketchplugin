@@ -28,13 +28,59 @@ var targetTemplates = loadSnippet("UITableViewCell")
 //parse target
 var subviews = parseLayerInGroup(target)
 
-var interfaceContent = "Soon to be an interface file";
-var implementationContent = "Soon to be an implementation file";
+var interfaceContent = mockInterface(targetTemplates["UITableViewCell"])
+var implementationContent = mockImplementation(targetTemplates["UITableViewCell"])
+
+log("Writing files")
 
 writeTextToFile(baseDir + "/" + [target name] + ".h", interfaceContent)
 writeTextToFile(baseDir + "/" + [target name] + ".m", implementationContent)
 
+log("Writing files [Done]")
+
 ///////////////FUNCTIONS///////////////
+
+function mockInterface(snippet)
+{
+    var headerSnippetPart = snippet[@"header"]
+
+    return renderItems([NSArray arrayWithObjects:headerSnippetPart[@"imports"],
+                       headerSnippetPart[@"interface_tag"]])
+}
+
+function mockImplementation(snippet)
+{
+    var implementationSnippetPart = snippet[@"implementation"]
+
+    return renderItems([NSArray arrayWithObjects:implementationSnippetPart[@"imports"],
+                       implementationSnippetPart[@"implementation_tag"][0],
+                       implementationSnippetPart[@"create"]),
+                       implementationSnippetPart[@"implementation_tag"][1]]])
+}
+
+function renderItems(items)
+{
+  var renderedString = @""
+  var separator = @"\n"
+
+  var loop = [items objectEnumerator]
+
+  while(item = [loop nextObject])
+  {
+      if([item isKindOfClass:[NSArray class]])
+      {
+          renderedString = [renderedString stringByAppendingString:[item componentsJoinedByString:separator]]
+      }
+      else
+      {
+          renderedString = [renderedString stringByAppendingString:item]
+      }
+
+      renderedString = [renderedString stringByAppendingString:@"\n"]
+  }
+
+  return renderedString
+}
 
 //Parses the layer of the selected group
 //MSLayerGroup -> layer of view structs
