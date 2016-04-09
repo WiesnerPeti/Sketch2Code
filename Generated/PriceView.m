@@ -9,3 +9,10 @@
     }
     return self;
 }
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    <SUBVIEW_LAYOUT>
+}
+@end

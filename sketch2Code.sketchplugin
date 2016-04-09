@@ -54,7 +54,8 @@ function mockImplementation(snippet)
 
     return renderItems([NSArray arrayWithObjects:implementationSnippetPart[@"imports"],
                        implementationSnippetPart[@"implementation_tag"][0],
-                       implementationSnippetPart[@"create"]),
+                       implementationSnippetPart[@"create"],
+                       implementationSnippetPart[@"layout"],
                        implementationSnippetPart[@"implementation_tag"][1]]])
 }
 
