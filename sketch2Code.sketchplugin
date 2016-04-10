@@ -25,17 +25,14 @@ var viewMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
 var targetTemplates = loadSnippet("UITableViewCell")
 
-//parse target
-var subviews = parseLayerInGroup(target)
-
-log("Loading snippet")
+log("Assembling snippet")
 
 var interfaceContent = mockInterface(targetTemplates["UITableViewCell"])
 var implementationContent = mockImplementation(targetTemplates["UITableViewCell"])
 
 log("Replacing template tags")
 
-var templateParts = mockTemplate(target);
+var templateParts = templateBinding(target);
 
 interfaceContent = templateCodeWithDictionary(interfaceContent, templateParts)
 implementationContent = templateCodeWithDictionary(implementationContent, templateParts)
@@ -68,37 +65,63 @@ function mockImplementation(snippet)
                        implementationSnippetPart[@"implementation_tag"][1]]])
 }
 
-function mockTemplate(targetView)
+function templateBinding(targetView)
 {
     var template = [NSMutableDictionary dictionary]
 
     template[@"<CLASS_NAME>"] = [target name]
-    template[@"<SUBVIEW_DECLARATION>"] = @"//Subview declaration comes here"
+
+    log("Collecting iVars")
+    var iVars = [NSMutableArray array];
+    visitLayerInGroup(target, function(layer){
+
+      var layerName = [layer name]
+      var layerClass = NSStringFromClass([layer class]);
+      var viewClass = viewMapping[layerClass]
+
+      log("Fount layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass)
+      if(viewClass != nil)
+      {
+          var iVarString = iVarDeclarastion(viewClass, layerName)
+          [iVars addObject:"\t" + iVarString]
+      }
+    })
+
+    template[@"<SUBVIEW_DECLARATION>"] = renderItemsWithSeparator(iVars, @"\n")
     template[@"<SUBVIEW_INIT>"] = @"//Subview initialization comes here"
     template[@"<SUBVIEW_LAYOUT>"] = @"//Subview layout comes here"
 
     return template
 }
 
+function iVarDeclarastion(className, varName)
+{
+  return className + " *_" + varName + ";";
+}
+
 function renderItems(items)
 {
-  var renderedString = @""
   var separator = @"\n"
+  return renderItemsWithSeparator(items, separator)
+}
 
+function renderItemsWithSeparator(items, separator)
+{
+  var renderedString = @""
   var loop = [items objectEnumerator]
 
   while(item = [loop nextObject])
   {
       if([item isKindOfClass:[NSArray class]])
       {
-          renderedString = [renderedString stringByAppendingString:[item componentsJoinedByString:separator]]
+          renderedString = renderedString + [item componentsJoinedByString:separator]
       }
       else
       {
-          renderedString = [renderedString stringByAppendingString:item]
+          renderedString = renderedString + item
       }
 
-      renderedString = [renderedString stringByAppendingString:@"\n"]
+      renderedString = renderedString + separator
   }
 
   return renderedString
@@ -107,7 +130,7 @@ function renderItems(items)
 //Parses the layer of the selected group
 //MSLayerGroup -> layer of view structs
 //Where view structs contains init, addition and layout update template codes
-function parseLayerInGroup(targetGroup)
+function visitLayerInGroup(targetGroup, block)
 {
    var layers = []
 
@@ -119,13 +142,7 @@ function parseLayerInGroup(targetGroup)
          continue
       }
 
-      var layerName = [layer name]
-      var layerClass = NSStringFromClass([layer class]);
-      var viewClass = viewMapping[layerClass]
-
-      log("Layer:" + layerClass + " name:" + layerName)
-
-      //var currentViewDescriptor = viewDescriptors[viewClass];
+      block(layer)
    }
 
    return layers
