@@ -1,11 +1,11 @@
-#import "<CLASS_NAME>.h"
-@implementation <CLASS_NAME>
+#import "PriceView.h"
+@implementation PriceView
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
-      <SUBVIEW_INIT>
+      //Subview initialization comes here
     }
     return self;
 }
@@ -13,6 +13,6 @@
 {
     [super layoutSubviews];
 
-    <SUBVIEW_LAYOUT>
+    //Subview layout comes here
 }
 @end

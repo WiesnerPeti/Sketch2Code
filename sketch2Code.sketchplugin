@@ -28,8 +28,17 @@ var targetTemplates = loadSnippet("UITableViewCell")
 //parse target
 var subviews = parseLayerInGroup(target)
 
+log("Loading snippet")
+
 var interfaceContent = mockInterface(targetTemplates["UITableViewCell"])
 var implementationContent = mockImplementation(targetTemplates["UITableViewCell"])
+
+log("Replacing template tags")
+
+var templateParts = mockTemplate(target);
+
+interfaceContent = templateCodeWithDictionary(interfaceContent, templateParts)
+implementationContent = templateCodeWithDictionary(implementationContent, templateParts)
 
 log("Writing files")
 
@@ -57,6 +66,18 @@ function mockImplementation(snippet)
                        implementationSnippetPart[@"create"],
                        implementationSnippetPart[@"layout"],
                        implementationSnippetPart[@"implementation_tag"][1]]])
+}
+
+function mockTemplate(targetView)
+{
+    var template = [NSMutableDictionary dictionary]
+
+    template[@"<CLASS_NAME>"] = [target name]
+    template[@"<SUBVIEW_DECLARATION>"] = @"//Subview declaration comes here"
+    template[@"<SUBVIEW_INIT>"] = @"//Subview initialization comes here"
+    template[@"<SUBVIEW_LAYOUT>"] = @"//Subview layout comes here"
+
+    return template
 }
 
 function renderItems(items)

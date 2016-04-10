@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-@interface <CLASS_NAME> : UITableViewCell
+@interface PriceView : UITableViewCell
 {
-    <SUBVIEW_DECLARATION>
+    //Subview declaration comes here
 }
 @end
