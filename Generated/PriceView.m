@@ -13,6 +13,11 @@
 {
     [super layoutSubviews];
 
-    //Subview layout comes here
+	[_arrow setFrame:CGRectZero]
+	[_titleLabel setFrame:CGRectZero]
+	[_priceLabel setFrame:CGRectZero]
+	[_priceBarImageView setFrame:CGRectZero]
+	[_backgroundView setFrame:CGRectZero]
+
 }
 @end

@@ -71,8 +71,10 @@ function templateBinding(targetView)
 
     template[@"<CLASS_NAME>"] = [target name]
 
-    log("Collecting iVars")
+    log("Collecting iVars and layout")
     var iVars = [NSMutableArray array];
+    var layouts = [NSMutableArray array];
+
     visitLayerInGroup(target, function(layer){
 
       var layerName = [layer name]
@@ -82,21 +84,49 @@ function templateBinding(targetView)
       log("Fount layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass)
       if(viewClass != nil)
       {
-          var iVarString = iVarDeclarastion(viewClass, layerName)
+          var iVarString = iVarDeclaration(viewClass, layerName)
           [iVars addObject:"\t" + iVarString]
+
+          var layoutString = layoutDefinition(layer, layerName)
+          [layouts addObject:"\t" + layoutString]
       }
     })
 
-    template[@"<SUBVIEW_DECLARATION>"] = renderItemsWithSeparator(iVars, @"\n")
+    template[@"<SUBVIEW_DECLARATION>"] = renderItems(iVars)
     template[@"<SUBVIEW_INIT>"] = @"//Subview initialization comes here"
-    template[@"<SUBVIEW_LAYOUT>"] = @"//Subview layout comes here"
+    template[@"<SUBVIEW_LAYOUT>"] = renderItems(layouts)
 
     return template
 }
 
-function iVarDeclarastion(className, varName)
+////
+// Rendering
+///
+function iVarDeclaration(className, varName)
 {
-  return className + " *_" + varName + ";";
+  return className + " *" + iVarName(varName) + ";";
+}
+
+function layoutDefinition(layer, varName)
+{
+    var layout = iVarName(varName) + " " + "setFrame:" + rectToString(layer.frame)
+    return messageSendText(layout)
+}
+
+function rectToString(rect)
+{
+  return "CGRectZero"
+  //  return "CGRectMake(" + rect.origin.x + "," + rect.origin.y + "," + rect.size.width + ","+ rect.size.height +")"
+}
+
+function messageSendText(text)
+{
+  return "[" + text + "]"
+}
+
+function iVarName(varName)
+{
+  return "_" + varName;
 }
 
 function renderItems(items)
@@ -162,14 +192,6 @@ function templateCodeWithDictionary(template, dictionary)
    }
 
    return finalString
-}
-
-////
-//COMMON HELPERS
-////
-function rectToString(rect)
-{
-   return "CGRectMake(" + Math.ceil(rect.x()).toFixed(0) + "," + Math.ceil(rect.y()).toFixed(0) + "," + Math.ceil(rect.width()).toFixed(0) + ","+ Math.ceil(rect.height()).toFixed(0) +")"
 }
 
 ////
