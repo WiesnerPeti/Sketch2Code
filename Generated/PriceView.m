@@ -5,7 +5,12 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
-//Subview initialization comes here
+	_arrow = [UIView new];
+	_titleLabel = [UILabel new];
+	_priceLabel = [UILabel new];
+	_priceBarImageView = [UIView new];
+	_backgroundView = [UIView new];
+
 
 	[self addSubview:_arrow];
 	[self addSubview:_titleLabel];

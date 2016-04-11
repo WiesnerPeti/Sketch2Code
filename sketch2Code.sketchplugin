@@ -73,32 +73,36 @@ function templateBinding(targetView)
 
     log("Collecting iVars and layout")
     var iVars = [NSMutableArray array];
-    var layouts = [NSMutableArray array];
+    var inits = [NSMutableArray array];
     var addSubviews = [NSMutableArray array];
+    var layouts = [NSMutableArray array];
 
     visitLayerInGroup(target, function(layer){
 
       var layerName = [layer name]
       var layerClass = NSStringFromClass([layer class]);
       var viewClass = viewMapping[layerClass]
-      var viewDescriptor = viewDescriptors[viewClass]
+      var viewDesc = viewDescriptors[viewClass]
 
-      log("Fount layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass)
+      log("Fount layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass + " viewDesc:" + viewDesc)
       if(viewClass != nil)
       {
           var iVarString = iVarDeclaration(viewClass, layerName)
           [iVars addObject:"\t" + iVarString]
 
-          var layoutString = layoutDefinition(layer, layerName)
-          [layouts addObject:"\t" + layoutString]
+          var initString = initDefinition(layer, layerName, viewDesc);
+          [inits addObject:"\t" + initString]
 
           var addSubviewString = addSubviewDefinition(layerName);
           [addSubviews addObject:"\t" + addSubviewString]
+
+          var layoutString = layoutDefinition(layer, layerName)
+          [layouts addObject:"\t" + layoutString]
       }
     })
 
     template[@"<SUBVIEW_DECLARATION>"] = renderItems(iVars)
-    template[@"<SUBVIEW_INIT>"] = @"//Subview initialization comes here"
+    template[@"<SUBVIEW_INIT>"] = renderItems(inits)
     template[@"<SUBVIEW_ADD>"] = renderItems(addSubviews)
     template[@"<SUBVIEW_LAYOUT>"] = renderItems(layouts)
 
@@ -111,6 +115,13 @@ function templateBinding(targetView)
 function iVarDeclaration(className, varName)
 {
   return className + " *" + iVarName(varName) + ";";
+}
+
+function initDefinition(layer, varName, desc)
+{
+    var createString = desc[@"create"]
+    var initString = iVarName(varName) + " " + "=" + " " + messageSendText(createString);
+    return initString + ";"
 }
 
 function addSubviewDefinition(varName)
