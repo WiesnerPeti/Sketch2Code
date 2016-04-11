@@ -74,12 +74,14 @@ function templateBinding(targetView)
     log("Collecting iVars and layout")
     var iVars = [NSMutableArray array];
     var layouts = [NSMutableArray array];
+    var addSubviews = [NSMutableArray array];
 
     visitLayerInGroup(target, function(layer){
 
       var layerName = [layer name]
       var layerClass = NSStringFromClass([layer class]);
       var viewClass = viewMapping[layerClass]
+      var viewDescriptor = viewDescriptors[viewClass]
 
       log("Fount layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass)
       if(viewClass != nil)
@@ -89,11 +91,15 @@ function templateBinding(targetView)
 
           var layoutString = layoutDefinition(layer, layerName)
           [layouts addObject:"\t" + layoutString]
+
+          var addSubviewString = addSubviewDefinition(layerName);
+          [addSubviews addObject:"\t" + addSubviewString]
       }
     })
 
     template[@"<SUBVIEW_DECLARATION>"] = renderItems(iVars)
     template[@"<SUBVIEW_INIT>"] = @"//Subview initialization comes here"
+    template[@"<SUBVIEW_ADD>"] = renderItems(addSubviews)
     template[@"<SUBVIEW_LAYOUT>"] = renderItems(layouts)
 
     return template
@@ -105,6 +111,12 @@ function templateBinding(targetView)
 function iVarDeclaration(className, varName)
 {
   return className + " *" + iVarName(varName) + ";";
+}
+
+function addSubviewDefinition(varName)
+{
+    var addSubview = "self" + " " + "addSubview:" + iVarName(varName)
+    return messageSendText(addSubview) + ";"
 }
 
 function layoutDefinition(layer, varName)

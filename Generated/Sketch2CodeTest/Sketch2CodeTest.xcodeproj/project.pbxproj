@@ -13,7 +13,7 @@
 		F531D1FF1CBC2022006C5D83 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F531D1FD1CBC2022006C5D83 /* Main.storyboard */; };
 		F531D2011CBC2022006C5D83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F531D2001CBC2022006C5D83 /* Assets.xcassets */; };
 		F531D2041CBC2022006C5D83 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F531D2021CBC2022006C5D83 /* LaunchScreen.storyboard */; };
-		F531D20D1CBC205E006C5D83 /* PriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F531D20C1CBC205E006C5D83 /* PriceView.m */; };
+		F531D2101CBC2404006C5D83 /* PriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F531D20F1CBC2404006C5D83 /* PriceView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +27,8 @@
 		F531D2001CBC2022006C5D83 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F531D2031CBC2022006C5D83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F531D2051CBC2022006C5D83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F531D20B1CBC205E006C5D83 /* PriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceView.h; sourceTree = "<group>"; };
-		F531D20C1CBC205E006C5D83 /* PriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceView.m; sourceTree = "<group>"; };
+		F531D20E1CBC2404006C5D83 /* PriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PriceView.h; path = ../../PriceView.h; sourceTree = "<group>"; };
+		F531D20F1CBC2404006C5D83 /* PriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PriceView.m; path = ../../PriceView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +61,8 @@
 		F531D1F31CBC2022006C5D83 /* Sketch2CodeTest */ = {
 			isa = PBXGroup;
 			children = (
-				F531D20B1CBC205E006C5D83 /* PriceView.h */,
-				F531D20C1CBC205E006C5D83 /* PriceView.m */,
+				F531D20E1CBC2404006C5D83 /* PriceView.h */,
+				F531D20F1CBC2404006C5D83 /* PriceView.m */,
 				F531D1F71CBC2022006C5D83 /* AppDelegate.h */,
 				F531D1F81CBC2022006C5D83 /* AppDelegate.m */,
 				F531D1FA1CBC2022006C5D83 /* ViewController.h */,
@@ -154,7 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F531D20D1CBC205E006C5D83 /* PriceView.m in Sources */,
+				F531D2101CBC2404006C5D83 /* PriceView.m in Sources */,
 				F531D1FC1CBC2022006C5D83 /* ViewController.m in Sources */,
 				F531D1F91CBC2022006C5D83 /* AppDelegate.m in Sources */,
 				F531D1F61CBC2022006C5D83 /* main.m in Sources */,
