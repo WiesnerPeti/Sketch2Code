@@ -110,7 +110,7 @@ function iVarDeclaration(className, varName)
 function layoutDefinition(layer, varName)
 {
     var layout = iVarName(varName) + " " + "setFrame:" + rectToString(layer.frame())
-    return messageSendText(layout)
+    return messageSendText(layout) + ";"
 }
 
 function rectToString(rect)
