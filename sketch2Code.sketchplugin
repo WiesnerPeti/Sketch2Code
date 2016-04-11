@@ -109,14 +109,13 @@ function iVarDeclaration(className, varName)
 
 function layoutDefinition(layer, varName)
 {
-    var layout = iVarName(varName) + " " + "setFrame:" + rectToString(layer.frame)
+    var layout = iVarName(varName) + " " + "setFrame:" + rectToString(layer.frame())
     return messageSendText(layout)
 }
 
 function rectToString(rect)
 {
-  return "CGRectZero"
-  //  return "CGRectMake(" + rect.origin.x + "," + rect.origin.y + "," + rect.size.width + ","+ rect.size.height +")"
+   return "CGRectMake(" + Math.ceil(rect.x()) + "," + Math.ceil(rect.y()) + "," + Math.ceil(rect.width()) + ","+ Math.ceil(rect.height()) +")"
 }
 
 function messageSendText(text)
