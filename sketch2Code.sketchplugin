@@ -21,7 +21,7 @@ var baseDir = get_dir_from_prompt()
 log("baseDir:" + baseDir)
 
 //Currently only that is supported
-var viewMapping = loadObjectMap()
+var classMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
 var targetTemplates = loadSnippet("UITableViewCell")
 
@@ -81,7 +81,7 @@ function templateBinding(targetView)
 
       var layerName = [layer name]
       var layerClass = NSStringFromClass([layer class]);
-      var mapDesc = viewMapping[layerClass]
+      var mapDesc = classMapping[layerClass]
 
       if(mapDesc != nil)
       {
@@ -129,7 +129,8 @@ function initDefinition(layer, varName, viewDesc, mapDesc)
     var propertyMap = mapDesc[@"properties"]
     if(propertyMap != nil)
     {
-       initString = renderItems([NSArray arrayWithObjects:initString, configStringDefinitions(layer, varName, propertyMap),nil])
+      var configString = configStringDefinitions(layer, varName, propertyMap)
+      initString = renderItems([NSArray arrayWithObjects:initString, configString, nil])
     }
 
     return initString
@@ -139,16 +140,23 @@ function configStringDefinitions(layer, varName, propertiesMap)
 {
     var config = [NSMutableArray array]
 
-    var loop = propertiesMap.objectEnumerator()
-    while (key = loop.nextObject()) {
-        var propertyname = propertiesMap[key]
+    enumerateDict(propertiesMap, function(key, propertyname){
+      var value = [layer valueForKeyPath:key]
+      var valueClass = NSStringFromClass([value class])
+      var viewClass = classMapping[valueClass][@"viewClass"]
+      var viewDesc = viewDescriptors[viewClass]
+      var createTemplate = viewDesc[@"create"]
 
-        var value = [layer valueForKeyPath:key]
-        var valueClass = NSStringFromClass([value class])
+      //For testing!!
+      enumerateDict([value RGBADictionary], function(key, value){
+          var tag = "<" + key + ">"
+          log(""+tag+" - "+value)
+          createTemplate = [createTemplate stringByReplacingOccurrencesOfString:tag withString:[value stringValue]]
+      });
 
-        var configString = "\t" + iVarName(varName) + "." + propertyname + " = " + "nil" + ";"
-        [config addObject:configString]
-    }
+      var configString = "\t" + iVarName(varName) + "." + propertyname + " = " + messageSendText(createTemplate) + ";"
+      [config addObject:configString]
+    });
 
     return renderItems(config)
 }
@@ -348,4 +356,14 @@ function get_dir_from_prompt(){
       var message = [panel filename];
       return message;
     }
+}
+
+function enumerateDict(dict, block)
+{
+  var loop = [[dict allKeys] objectEnumerator]
+  while (key = loop.nextObject()) {
+      var value = dict[key]
+
+      block(key, value)
+  }
 }
