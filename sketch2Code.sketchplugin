@@ -81,16 +81,19 @@ function templateBinding(targetView)
 
       var layerName = [layer name]
       var layerClass = NSStringFromClass([layer class]);
-      var viewClass = viewMapping[layerClass]
-      var viewDesc = viewDescriptors[viewClass]
+      var mapDesc = viewMapping[layerClass]
 
-      log("Fount layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass + " viewDesc:" + viewDesc)
-      if(viewClass != nil)
+      if(mapDesc != nil)
       {
+          var viewClass = mapDesc[@"viewClass"]
+          var viewDesc = viewDescriptors[viewClass]
+
+          log("Layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass + " viewDesc:" + viewDesc)
+
           var iVarString = iVarDeclaration(viewClass, layerName)
           [iVars addObject:"\t" + iVarString]
 
-          var initString = initDefinition(layer, layerName, viewDesc);
+          var initString = initDefinition(layer, layerName, viewDesc, mapDesc);
           [inits addObject:"\t" + initString]
 
           var addSubviewString = addSubviewDefinition(layerName);
@@ -114,14 +117,40 @@ function templateBinding(targetView)
 ///
 function iVarDeclaration(className, varName)
 {
-  return className + " *" + iVarName(varName) + ";";
+  return className + " *" + iVarName(varName) + ";"
 }
 
-function initDefinition(layer, varName, desc)
+function initDefinition(layer, varName, viewDesc, mapDesc)
 {
-    var createString = desc[@"create"]
-    var initString = iVarName(varName) + " " + "=" + " " + messageSendText(createString);
-    return initString + ";"
+    var createString = viewDesc[@"create"]
+    var initString = iVarName(varName) + " " + "=" + " " + messageSendText(createString) + ";"
+
+    //Config
+    var propertyMap = mapDesc[@"properties"]
+    if(propertyMap != nil)
+    {
+       initString = renderItems([NSArray arrayWithObjects:initString, configStringDefinitions(layer, varName, propertyMap),nil])
+    }
+
+    return initString
+}
+
+function configStringDefinitions(layer, varName, propertiesMap)
+{
+    var config = [NSMutableArray array]
+
+    var loop = propertiesMap.objectEnumerator()
+    while (key = loop.nextObject()) {
+        var propertyname = propertiesMap[key]
+
+        var value = [layer valueForKeyPath:key]
+        var valueClass = NSStringFromClass([value class])
+
+        var configString = "\t" + iVarName(varName) + "." + propertyname + " = " + "nil" + ";"
+        [config addObject:configString]
+    }
+
+    return renderItems(config)
 }
 
 function addSubviewDefinition(varName)
@@ -230,6 +259,8 @@ function loadObjectMap()
     log("Loading map at:" + path)
 
     id map = loadJSON(path)
+
+    log("" + map)
 
     log("Map loading [Done]")
 

@@ -1,5 +1,17 @@
 {
-  "MSBitmapLayer" : "UIImageView",
-  "MSTextLayer" : "UILabel",
-  "MSShapeGroup" : "UIView"
+  "MSBitmapLayer" : {
+    "viewClass" : "UIImageView",
+  },
+  "MSTextLayer" : {
+    "viewClass" : "UILabel",
+    "properties" :{
+      "textColor" : "textColor"
+    }
+  },
+  "MSShapeGroup" : {
+    "viewClass" : "UIView"
+  },
+  "MSColor" : {
+    "viewClass" : "UIColor"
+  }
 }

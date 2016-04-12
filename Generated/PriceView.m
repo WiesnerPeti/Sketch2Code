@@ -7,7 +7,13 @@
     {
 	_arrow = [UIView new];
 	_titleLabel = [UILabel new];
+	_titleLabel.textColor = nil;
+
+
 	_priceLabel = [UILabel new];
+	_priceLabel.textColor = nil;
+
+
 	_priceBarImageView = [UIView new];
 	_backgroundView = [UIView new];
 
