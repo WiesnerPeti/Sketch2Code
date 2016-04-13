@@ -1,16 +1,27 @@
 {
   "UIView" : {
-    "create" : "UIView new",
+    "create" : {
+      "template" : "UIView new"
+    },
     "imports" : []
   },
   "UILabel" : {
-    "create" : "UILabel new",
+    "create" : {
+      "template" : "UILabel new"
+    },
     "imports" : []
   },
   "UIFont" : {
-    "create" : "UIFont fontWithName:<NAME> size:<SIZE>"
+    "create" : {
+      "template" : "UIFont fontWithName:<NAME> size:<SIZE>"
+    }
   },
   "UIColor" : {
-    "create" : "UIColor colorWithRed:<r> green:<g> blue:<b> alpha:<a>"
+    "create" : {
+      "template" : "UIColor colorWithRed:<r> green:<g> blue:<b> alpha:<a>",
+      "bindings" : {
+        "<r>" : "var f = function(dict){return dict[\"b\"];}; f(<DICT>)"
+      }
+    }
   }
 }

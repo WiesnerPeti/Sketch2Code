@@ -122,7 +122,7 @@ function iVarDeclaration(className, varName)
 
 function initDefinition(layer, varName, viewDesc, mapDesc)
 {
-    var createString = viewDesc[@"create"]
+    var createString = viewDesc[@"create"][@"template"]
     var initString = iVarName(varName) + " " + "=" + " " + messageSendText(createString) + ";"
 
     //Config
@@ -145,12 +145,17 @@ function configStringDefinitions(layer, varName, propertiesMap)
       var valueClass = NSStringFromClass([value class])
       var viewClass = classMapping[valueClass][@"viewClass"]
       var viewDesc = viewDescriptors[viewClass]
-      var createTemplate = viewDesc[@"create"]
+      var createTemplate = viewDesc[@"create"][@"template"]
+
+      //Not yet working (an MO* object is missing a copyWithZone:)
+      // enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
+      //   var valueObj = evalBindigCode(code, [value RGBADictionary])
+      //   createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:[value stringValue]]
+      // })
 
       //For testing!!
       enumerateDict([value RGBADictionary], function(key, value){
           var tag = "<" + key + ">"
-          log(""+tag+" - "+value)
           createTemplate = [createTemplate stringByReplacingOccurrencesOfString:tag withString:[value stringValue]]
       });
 
@@ -366,4 +371,35 @@ function enumerateDict(dict, block)
 
       block(key, value)
   }
+}
+
+function evalBindigCode(code, parameter)
+{
+    var webView = [WKWebView new]
+
+    var errorPointer = MOPointer.alloc().initWithValue(nil)
+    var parameterData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:errorPointer]
+
+    if(errorPointer.value())
+    {
+      log("Error:" + errorPointer.value())
+    }
+
+    var parameterString = [[NSString alloc] initWithData:parameterData encoding:4]
+    var script = [code stringByReplacingOccurrencesOfString:@"<DICT>" withString:parameterString];
+
+    log("code: "+ script)
+
+    var returnValue = nil;
+    var returnValue = [webView evaluateJavaScript:script
+         completionHandler:function(result, error){
+           returnValue = result
+         }]
+
+    while (returnValue == nil)
+    {
+       [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+
+    return returnValue
 }
