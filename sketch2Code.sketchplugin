@@ -148,16 +148,10 @@ function configStringDefinitions(layer, varName, propertiesMap)
       var createTemplate = viewDesc[@"create"][@"template"]
 
       //Not yet working (an MO* object is missing a copyWithZone:)
-      // enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
-      //   var valueObj = evalBindigCode(code, [value RGBADictionary])
-      //   createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:[value stringValue]]
-      // })
-
-      //For testing!!
-      enumerateDict([value RGBADictionary], function(key, value){
-          var tag = "<" + key + ">"
-          createTemplate = [createTemplate stringByReplacingOccurrencesOfString:tag withString:[value stringValue]]
-      });
+      enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
+        var valueObj = evalBindigCode(code, [value RGBADictionary])
+        createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
+      })
 
       var configString = "\t" + iVarName(varName) + "." + propertyname + " = " + messageSendText(createTemplate) + ";"
       [config addObject:configString]
@@ -375,7 +369,7 @@ function enumerateDict(dict, block)
 
 function evalBindigCode(code, parameter)
 {
-    var webView = [WKWebView new]
+    var webView = [WebView new]
 
     var errorPointer = MOPointer.alloc().initWithValue(nil)
     var parameterData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:errorPointer]
@@ -390,16 +384,19 @@ function evalBindigCode(code, parameter)
 
     log("code: "+ script)
 
-    var returnValue = nil;
-    var returnValue = [webView evaluateJavaScript:script
-         completionHandler:function(result, error){
-           returnValue = result
-         }]
+    var returnValue = [webView stringByEvaluatingJavaScriptFromString:script];
 
-    while (returnValue == nil)
-    {
-       [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
+    log("returnValue: "+ returnValue)
+    // var returnValue = nil;
+    // var returnValue = [webView evaluateJavaScript:script
+    //      completionHandler:function(result, error){
+    //        returnValue = result
+    //      }]
+    //
+    // while (returnValue == nil)
+    // {
+    //    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    // }
 
     return returnValue
 }
