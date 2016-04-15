@@ -17,6 +17,7 @@ if (![target isKindOfClass:[MSLayerGroup class]])
 log("Target:" + target)
 
 var baseDir = get_dir_from_prompt()
+var webView = [WebView new]
 
 log("baseDir:" + baseDir)
 
@@ -149,7 +150,8 @@ function configStringDefinitions(layer, varName, propertiesMap)
 
       //Not yet working (an MO* object is missing a copyWithZone:)
       enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
-        var valueObj = evalBindigCode(code, [value RGBADictionary])
+        var valueAsDictionary = objectAsDictionary(value)
+        var valueObj = evalBindigCode(code, valueAsDictionary)
         createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
       })
 
@@ -369,8 +371,6 @@ function enumerateDict(dict, block)
 
 function evalBindigCode(code, parameter)
 {
-    var webView = [WebView new]
-
     var errorPointer = MOPointer.alloc().initWithValue(nil)
     var parameterData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:errorPointer]
 
@@ -387,16 +387,100 @@ function evalBindigCode(code, parameter)
     var returnValue = [webView stringByEvaluatingJavaScriptFromString:script];
 
     log("returnValue: "+ returnValue)
-    // var returnValue = nil;
-    // var returnValue = [webView evaluateJavaScript:script
-    //      completionHandler:function(result, error){
-    //        returnValue = result
-    //      }]
-    //
-    // while (returnValue == nil)
-    // {
-    //    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    // }
 
     return returnValue
+}
+
+function objectAsDictionary(object)
+{
+    if([object isKindOfClass:[NSDictionary class]])
+    {
+        var serializedDictionary = serializeDictionaryUsingDateFormatKey(object)]
+        return serializedDictionary
+    }
+
+    var dict = [NSMutableDictionary new]
+
+    var properties = [[[object class] mocha] propertiesWithAncestors];
+
+    for(var i = 0; i < properties.count(); i++)
+    {
+        var property = properties[i]
+        var propName = [property name]
+
+        var getterMethod = [MOMethod methodWithTarget:object selector:propName)]
+        var value = getterMethod()
+
+        if(typeof value == 'object' && ([propName rangeOfString:"class"].location == NSNotFound) && value != nil)
+        {
+           value = serializeValueUsingDateFormatKey(value)
+        }
+
+        if(value != nil && typeof value != 'object')
+        {
+            dict[propName] = value
+        }
+    }
+
+    log(dict)
+
+    return dict;
+}
+
+function serializeValueUsingDateFormatKey(value)
+{
+      if([value isKindOfClass:[NSArray class]])
+      {
+          // return serializeArrayUsingDateFormatKey(value);
+      }
+      else if([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]])
+      {
+          return value;
+      }
+      else if([value isKindOfClass:[NSDictionary class]])
+      {
+          // return serializeDictionaryUsingDateFormatKey(value);
+      }
+      else if(value)
+      {
+          // return  objectAsDictionary(value);
+      }
+
+      return nil;
+}
+
+function serializeDictionaryUsingDateFormatKey(dictionary)
+{
+    var serializableDictionary = [NSMutableDictionary new];
+    var loop = [[dictionary allKeys] objectEnumerator]
+    while (dictKey = loop.nextObject()) {
+        var dictValue = dictionary[dictKey]
+
+        var serializedValue = serializeValueUsingDateFormatKey(dictValue);
+
+        if(serializedValue)
+        {
+            serializableDictionary[dictKey] = serializedValue;
+        }
+    }
+
+    return serializableDictionary;
+}
+
+function serializeArrayUsingDateFormatKey(array)
+{
+    var serializableArray = [NSMutableArray new];
+
+    var loop = [array objectEnumerator]
+    while (item = loop.nextObject())
+    {
+        var serializableValue = serializeValueUsingDateFormatKey(item);
+
+        if(serializableValue)
+        {
+            [serializableArray addObject:serializableValue];
+        }
+    }
+
+    return serializableArray;
 }
