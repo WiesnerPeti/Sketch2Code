@@ -124,7 +124,7 @@ function iVarDeclaration(className, varName)
 function initDefinition(layer, varName, viewDesc, mapDesc)
 {
     var createString = viewDesc[@"create"][@"template"]
-    var initString = iVarName(varName) + " " + "=" + " " + messageSendText(createString) + ";"
+    var initString = iVarName(varName) + " " + "=" + " " + createString + ";"
 
     // objectAsDictionary(layer)
 
@@ -151,30 +151,28 @@ function configStringDefinitions(layer, varName, propertiesMap)
 
       log("ValyeForKeyPath :" + key + " " + value)
 
+      if(value == nil)
+      {
+        return
+      }
+
       var configString = nil
 
-      if(value != nil)
-      {
-        var valueAsDictionary = objectAsDictionary(value)
-        var valueClass = NSStringFromClass([value class])
+      var valueAsDictionary = objectAsDictionary(value)
+      var valueClass = NSStringFromClass([value class])
 
-        var viewClass = classMapping[valueClass][@"viewClass"]
-        var viewDesc = viewDescriptors[viewClass]
-        var createTemplate = viewDesc[@"create"][@"template"]
+      var viewClass = classMapping[valueClass][@"viewClass"]
+      var viewDesc = viewDescriptors[viewClass]
+      var createTemplate = viewDesc[@"create"][@"template"]
 
-        //Not yet working (an MO* object is missing a copyWithZone:)
-        enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
+      //Not yet working (an MO* object is missing a copyWithZone:)
+      enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
 
-          var valueObj = evalBindigCode(code, valueAsDictionary)
-          createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
-        })
+        var valueObj = evalBindigCode(code, valueAsDictionary)
+        createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
+      })
 
-        configString = "\t" + iVarName(varName) + "." + propertyname + " = " + messageSendText(createTemplate) + ";"
-      }
-      else
-      {
-        configString = "\t" + iVarName(varName) + "." + propertyname + " = " + "nil" + ";"
-      }
+      configString = "\t" + iVarName(varName) + "." + propertyname + " = " + createTemplate + ";"
 
       [config addObject:configString]
     });
@@ -443,7 +441,7 @@ function objectAsDictionary(object)
 
           var value = getterMethod()
 
-          // log(propName + " - " + value)
+          // log(propName + " - " + value + " - " + typeof value)
 
           if(value == nil)
           {
@@ -455,7 +453,7 @@ function objectAsDictionary(object)
              value = serializeValueUsingDateFormatKey(value)
           }
 
-          if(typeof value != 'object')
+          if(typeof value != 'object' || isJSONReady(value))
           {
               dict[propName] = value
           }
@@ -475,7 +473,7 @@ function serializeValueUsingDateFormatKey(value)
       {
           // return serializeArrayUsingDateFormatKey(value);
       }
-      else if([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]])
+      else if(isJSONReady(value))
       {
           return value;
       }
@@ -489,6 +487,11 @@ function serializeValueUsingDateFormatKey(value)
       }
 
       return nil;
+}
+
+function isJSONReady(value)
+{
+    return [value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]] || (typeof value == "number");
 }
 
 function serializeDictionaryUsingDateFormatKey(dictionary)

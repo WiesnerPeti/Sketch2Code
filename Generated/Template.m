@@ -1,26 +1,26 @@
-#import "PriceView.h"
-@implementation PriceView
+#import "Template.h"
+@implementation Template
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
 	_backgroundView = [UIView new];
-	_backgroundView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+	_backgroundView.backgroundColor = [UIColor colorWithRed: green: blue: alpha:];
 
 
 	_priceBarImageView = [UIView new];
-	_priceBarImageView.backgroundColor = [UIColor colorWithRed:0 green:0.5176470588235293 blue:1 alpha:1];
+	_priceBarImageView.backgroundColor = [UIColor colorWithRed: green: blue: alpha:];
 
 
 	_priceLabel = [UILabel new];
-	_priceLabel.text = @"$220";
-	_priceLabel.textColor = [UIColor colorWithRed:0.2039215686 green:0.2117647059 blue:0.2392156863 alpha:1];
+	_priceLabel.text = [@"$220"];
+	_priceLabel.textColor = [UIColor colorWithRed: green: blue: alpha:];
 
 
 	_titleLabel = [UILabel new];
-	_titleLabel.text = @"Section";
-	_titleLabel.textColor = [UIColor colorWithRed:0.2039215686 green:0.2117647059 blue:0.2392156863 alpha:1];
+	_titleLabel.text = [@"Section"];
+	_titleLabel.textColor = [UIColor colorWithRed: green: blue: alpha:];
 
 
 	_arrow = [UIView new];

@@ -5,7 +5,8 @@
   "MSTextLayer" : {
     "viewClass" : "UILabel",
     "properties" :{
-      "textColor" : "textColor"
+      "textColor" : "textColor",
+      "stringValue" : "text"
     }
   },
   "MSShapeGroup" : {
@@ -16,5 +17,8 @@
   },
   "MSColor" : {
     "viewClass" : "UIColor"
+  },
+  "NSBigMutableString" : {
+    "viewClass" : "NSString"
   }
 }

@@ -1,29 +1,37 @@
 {
   "UIView" : {
     "create" : {
-      "template" : "UIView new"
+      "template" : "[UIView new]"
     },
     "imports" : []
   },
   "UILabel" : {
     "create" : {
-      "template" : "UILabel new"
+      "template" : "[UILabel new]"
     },
     "imports" : []
   },
   "UIFont" : {
     "create" : {
-      "template" : "UIFont fontWithName:<NAME> size:<SIZE>"
+      "template" : "[UIFont fontWithName:<NAME> size:<SIZE>]"
     }
   },
   "UIColor" : {
     "create" : {
-      "template" : "UIColor colorWithRed:<r> green:<g> blue:<b> alpha:<a>",
+      "template" : "[UIColor colorWithRed:<r> green:<g> blue:<b> alpha:<a>]",
       "bindings" : {
         "<r>" : "var f = function(dict){return dict[\"red\"];}; f(<DICT>)",
         "<g>" : "var f = function(dict){return dict[\"green\"];}; f(<DICT>)",
         "<b>" : "var f = function(dict){return dict[\"blue\"];}; f(<DICT>)",
         "<a>" : "var f = function(dict){return dict[\"alpha\"];}; f(<DICT>)"
+      }
+    }
+  },
+  "NSString" : {
+    "create" : {
+      "template" : "@\"<string>\"",
+      "bindings" : {
+        "<string>" : "var f = function(dict){return dict[\"description\"];}; f(<DICT>)"
       }
     }
   }
