@@ -17,6 +17,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor grayColor];
+    
     _price = [[PriceView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Identifier"];
     [self.view addSubview:_price];
 }

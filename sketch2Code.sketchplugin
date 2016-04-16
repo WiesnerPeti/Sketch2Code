@@ -126,6 +126,8 @@ function initDefinition(layer, varName, viewDesc, mapDesc)
     var createString = viewDesc[@"create"][@"template"]
     var initString = iVarName(varName) + " " + "=" + " " + messageSendText(createString) + ";"
 
+    // objectAsDictionary(layer)
+
     //Config
     var propertyMap = mapDesc[@"properties"]
     if(propertyMap != nil)
@@ -142,20 +144,38 @@ function configStringDefinitions(layer, varName, propertiesMap)
     var config = [NSMutableArray array]
 
     enumerateDict(propertiesMap, function(key, propertyname){
+
+      var keyPath = [key componentsSeparatedByString:"."]
+
       var value = [layer valueForKeyPath:key]
-      var valueClass = NSStringFromClass([value class])
-      var viewClass = classMapping[valueClass][@"viewClass"]
-      var viewDesc = viewDescriptors[viewClass]
-      var createTemplate = viewDesc[@"create"][@"template"]
 
-      //Not yet working (an MO* object is missing a copyWithZone:)
-      enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
+      log("ValyeForKeyPath :" + key + " " + value)
+
+      var configString = nil
+
+      if(value != nil)
+      {
         var valueAsDictionary = objectAsDictionary(value)
-        var valueObj = evalBindigCode(code, valueAsDictionary)
-        createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
-      })
+        var valueClass = NSStringFromClass([value class])
 
-      var configString = "\t" + iVarName(varName) + "." + propertyname + " = " + messageSendText(createTemplate) + ";"
+        var viewClass = classMapping[valueClass][@"viewClass"]
+        var viewDesc = viewDescriptors[viewClass]
+        var createTemplate = viewDesc[@"create"][@"template"]
+
+        //Not yet working (an MO* object is missing a copyWithZone:)
+        enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
+
+          var valueObj = evalBindigCode(code, valueAsDictionary)
+          createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
+        })
+
+        configString = "\t" + iVarName(varName) + "." + propertyname + " = " + messageSendText(createTemplate) + ";"
+      }
+      else
+      {
+        configString = "\t" + iVarName(varName) + "." + propertyname + " = " + "nil" + ";"
+      }
+
       [config addObject:configString]
     });
 
@@ -224,7 +244,7 @@ function visitLayerInGroup(targetGroup, block)
 {
    var layers = []
 
-   var loop = [[targetGroup children] reverseObjectEnumerator];
+   var loop = [[targetGroup children] objectEnumerator];
    while(layer = [loop nextObject])
    {
       if (layer == target)
@@ -369,6 +389,14 @@ function enumerateDict(dict, block)
   }
 }
 
+function enumerateArray(array, block)
+{
+  var loop = [array objectEnumerator]
+  while (item = loop.nextObject()) {
+      block(item)
+  }
+}
+
 function evalBindigCode(code, parameter)
 {
     var errorPointer = MOPointer.alloc().initWithValue(nil)
@@ -382,11 +410,7 @@ function evalBindigCode(code, parameter)
     var parameterString = [[NSString alloc] initWithData:parameterData encoding:4]
     var script = [code stringByReplacingOccurrencesOfString:@"<DICT>" withString:parameterString];
 
-    log("code: "+ script)
-
     var returnValue = [webView stringByEvaluatingJavaScriptFromString:script];
-
-    log("returnValue: "+ returnValue)
 
     return returnValue
 }
@@ -408,17 +432,35 @@ function objectAsDictionary(object)
         var property = properties[i]
         var propName = [property name]
 
-        var getterMethod = [MOMethod methodWithTarget:object selector:propName)]
-        var value = getterMethod()
-
-        if(typeof value == 'object' && ([propName rangeOfString:"class"].location == NSNotFound) && value != nil)
+        if(isExcludedPropertyName(propName))
         {
-           value = serializeValueUsingDateFormatKey(value)
+            continue;
         }
 
-        if(value != nil && typeof value != 'object')
-        {
-            dict[propName] = value
+        var getterMethod = [MOMethod methodWithTarget:object selector:propName)]
+
+        try {
+
+          var value = getterMethod()
+
+          // log(propName + " - " + value)
+
+          if(value == nil)
+          {
+            continue;
+          }
+
+          if(typeof value == 'object' && ([propName rangeOfString:"class"].location == NSNotFound))
+          {
+             value = serializeValueUsingDateFormatKey(value)
+          }
+
+          if(typeof value != 'object')
+          {
+              dict[propName] = value
+          }
+        } catch (e) {
+
         }
     }
 
@@ -483,4 +525,10 @@ function serializeArrayUsingDateFormatKey(array)
     }
 
     return serializableArray;
+}
+
+function isExcludedPropertyName(name)
+{
+  var array = [NSArray arrayWithObjects:"transformStruct",nil]
+  return [array containsObject:name]
 }

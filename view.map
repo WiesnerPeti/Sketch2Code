@@ -9,7 +9,10 @@
     }
   },
   "MSShapeGroup" : {
-    "viewClass" : "UIView"
+    "viewClass" : "UIView",
+    "properties" :{
+      "style.fill.color" : "backgroundColor"
+    }
   },
   "MSColor" : {
     "viewClass" : "UIColor"
