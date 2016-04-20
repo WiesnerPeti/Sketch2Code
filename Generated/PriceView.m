@@ -15,11 +15,13 @@
 
 	_priceLabel = [UILabel new];
 	_priceLabel.text = @"$220";
+	_priceLabel.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:13.65333333333333];
 	_priceLabel.textColor = [UIColor colorWithRed:0.2039215686 green:0.2117647059 blue:0.2392156863 alpha:1];
 
 
 	_titleLabel = [UILabel new];
 	_titleLabel.text = @"Section";
+	_titleLabel.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:13.65333333333333];
 	_titleLabel.textColor = [UIColor colorWithRed:0.2039215686 green:0.2117647059 blue:0.2392156863 alpha:1];
 
 

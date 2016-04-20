@@ -6,7 +6,8 @@
     "viewClass" : "UILabel",
     "properties" :{
       "textColor" : "textColor",
-      "stringValue" : "text"
+      "stringValue" : "text",
+      "font" : "font"
     }
   },
   "MSShapeGroup" : {
@@ -20,5 +21,8 @@
   },
   "NSBigMutableString" : {
     "viewClass" : "NSString"
+  },
+  "NSFont" : {
+    "viewClass" : "UIFont"
   }
 }

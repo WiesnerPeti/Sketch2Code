@@ -2,7 +2,7 @@
 
 if([selection count] == 0)
 {
-   log("No selection found")
+   custom_log("No selection found")
    return
 }
 
@@ -10,44 +10,44 @@ var target = selection[0]
 
 if (![target isKindOfClass:[MSLayerGroup class]])
 {
-   log("Not a group")
+   custom_log("Not a group")
    return
 }
 
-log("Target:" + target)
+custom_log("Target:" + target)
 
 var baseDir = get_dir_from_prompt()
 var webView = [WebView new]
 
-log("baseDir:" + baseDir)
+custom_log("baseDir:" + baseDir)
 
 //Currently only that is supported
 var classMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
 var targetTemplates = loadSnippet("UITableViewCell")
 
-log("Assembling snippet")
+custom_log("Assembling snippet")
 
-var interfaceContent = mockInterface(targetTemplates["UITableViewCell"])
-var implementationContent = mockImplementation(targetTemplates["UITableViewCell"])
+var interfaceContent = interfaceCode(targetTemplates["UITableViewCell"])
+var implementationContent = implementationCode(targetTemplates["UITableViewCell"])
 
-log("Replacing template tags")
+custom_log("Replacing template tags")
 
 var templateParts = templateBinding(target);
 
 interfaceContent = templateCodeWithDictionary(interfaceContent, templateParts)
 implementationContent = templateCodeWithDictionary(implementationContent, templateParts)
 
-log("Writing files")
+custom_log("Writing files")
 
 writeTextToFile(baseDir + "/" + [target name] + ".h", interfaceContent)
 writeTextToFile(baseDir + "/" + [target name] + ".m", implementationContent)
 
-log("Writing files [Done]")
+custom_log("Writing files [Done]")
 
 ///////////////FUNCTIONS///////////////
 
-function mockInterface(snippet)
+function interfaceCode(snippet)
 {
     var headerSnippetPart = snippet[@"header"]
 
@@ -55,7 +55,7 @@ function mockInterface(snippet)
                        headerSnippetPart[@"interface_tag"]])
 }
 
-function mockImplementation(snippet)
+function implementationCode(snippet)
 {
     var implementationSnippetPart = snippet[@"implementation"]
 
@@ -72,7 +72,7 @@ function templateBinding(targetView)
 
     template[@"<CLASS_NAME>"] = [target name]
 
-    log("Collecting iVars and layout")
+    custom_log("Collecting iVars and layout")
     var iVars = [NSMutableArray array];
     var inits = [NSMutableArray array];
     var addSubviews = [NSMutableArray array];
@@ -89,7 +89,7 @@ function templateBinding(targetView)
           var viewClass = mapDesc[@"viewClass"]
           var viewDesc = viewDescriptors[viewClass]
 
-          log("Layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass + " viewDesc:" + viewDesc)
+          custom_log("Layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass + " viewDesc:" + viewDesc)
 
           var iVarString = iVarDeclaration(viewClass, layerName)
           [iVars addObject:"\t" + iVarString]
@@ -149,7 +149,7 @@ function configStringDefinitions(layer, varName, propertiesMap)
 
       var value = [layer valueForKeyPath:key]
 
-      log("ValyeForKeyPath :" + key + " " + value)
+      custom_log("ValyeForKeyPath :" + key + " " + value)
 
       if(value == nil)
       {
@@ -169,6 +169,9 @@ function configStringDefinitions(layer, varName, propertiesMap)
       enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
 
         var valueObj = evalBindigCode(code, valueAsDictionary)
+
+        custom_log("Binding: " + binding + " value: " + valueObj)
+        
         createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
       })
 
@@ -283,13 +286,13 @@ function loadObjectMap()
 
     path = [path stringByAppendingString:@"view.map"]
 
-    log("Loading map at:" + path)
+    custom_log("Loading map at:" + path)
 
     id map = loadJSON(path)
 
-    log("" + map)
+    custom_log("" + map)
 
-    log("Map loading [Done]")
+    custom_log("Map loading [Done]")
 
     return map
 }
@@ -301,11 +304,11 @@ function loadSnippet(snippetName)
   filePath = [filePath stringByAppendingString:snippetName]
   filePath = [filePath stringByAppendingString:@".snippet"]
 
-  log("Loading snippet: " + filePath)
+  custom_log("Loading snippet: " + filePath)
 
   id snippet = loadJSON(filePath)
 
-  log("Snippet loaded[Done]")
+  custom_log("Snippet loaded[Done]")
 
   return snippet
 }
@@ -317,14 +320,14 @@ function loadJSON(filePath)
 
   if(errorPointer.value())
   {
-    log("Error:" + errorPointer.value())
+    custom_log("Error:" + errorPointer.value())
   }
 
   id json =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:errorPointer]
 
   if(errorPointer.value())
   {
-    log("Error:" + errorPointer.value())
+    custom_log("Error:" + errorPointer.value())
   }
 
   return json
@@ -357,7 +360,7 @@ function writeTextToFile(path, text)
 
      if(errorPointer.value())
      {
-        log("Error:" + errorPointer.value())
+        custom_log("Error:" + errorPointer.value())
      }
 
      return result;
@@ -402,7 +405,7 @@ function evalBindigCode(code, parameter)
 
     if(errorPointer.value())
     {
-      log("Error:" + errorPointer.value())
+      custom_log("Error:" + errorPointer.value())
     }
 
     var parameterString = [[NSString alloc] initWithData:parameterData encoding:4]
@@ -441,7 +444,7 @@ function objectAsDictionary(object)
 
           var value = getterMethod()
 
-          // log(propName + " - " + value + " - " + typeof value)
+          custom_log(propName + " - " + value + " - " + typeof value)
 
           if(value == nil)
           {
@@ -462,7 +465,7 @@ function objectAsDictionary(object)
         }
     }
 
-    log(dict)
+    custom_log(dict)
 
     return dict;
 }
@@ -534,4 +537,9 @@ function isExcludedPropertyName(name)
 {
   var array = [NSArray arrayWithObjects:"transformStruct",nil]
   return [array containsObject:name]
+}
+
+function custom_log(string)
+{
+  log("SKETCH2CODE | " + string)
 }

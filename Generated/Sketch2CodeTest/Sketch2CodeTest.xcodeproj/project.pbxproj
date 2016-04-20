@@ -14,6 +14,7 @@
 		F531D2011CBC2022006C5D83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F531D2001CBC2022006C5D83 /* Assets.xcassets */; };
 		F531D2041CBC2022006C5D83 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F531D2021CBC2022006C5D83 /* LaunchScreen.storyboard */; };
 		F531D2101CBC2404006C5D83 /* PriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F531D20F1CBC2404006C5D83 /* PriceView.m */; };
+		F571705C1CC7F116001F744E /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F571705B1CC7F10E001F744E /* SourceSansPro-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		F531D2051CBC2022006C5D83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F531D20E1CBC2404006C5D83 /* PriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PriceView.h; path = ../../PriceView.h; sourceTree = "<group>"; };
 		F531D20F1CBC2404006C5D83 /* PriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PriceView.m; path = ../../PriceView.m; sourceTree = "<group>"; };
+		F571705B1CC7F10E001F744E /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				F531D2001CBC2022006C5D83 /* Assets.xcassets */,
 				F531D2021CBC2022006C5D83 /* LaunchScreen.storyboard */,
 				F531D2051CBC2022006C5D83 /* Info.plist */,
+				F571705B1CC7F10E001F744E /* SourceSansPro-Regular.ttf */,
 				F531D1F41CBC2022006C5D83 /* Supporting Files */,
 			);
 			path = Sketch2CodeTest;
@@ -141,6 +144,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F571705C1CC7F116001F744E /* SourceSansPro-Regular.ttf in Resources */,
 				F531D2041CBC2022006C5D83 /* LaunchScreen.storyboard in Resources */,
 				F531D2011CBC2022006C5D83 /* Assets.xcassets in Resources */,
 				F531D1FF1CBC2022006C5D83 /* Main.storyboard in Resources */,
@@ -308,6 +312,7 @@
 				F531D20A1CBC2022006C5D83 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

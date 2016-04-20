@@ -13,7 +13,11 @@
   },
   "UIFont" : {
     "create" : {
-      "template" : "[UIFont fontWithName:<NAME> size:<SIZE>]"
+      "template" : "[UIFont fontWithName:<NAME> size:<SIZE>]",
+      "bindings" : {
+        "<NAME>" : "var f = function(dict){return '@\"' + dict[\"fontName\"] + '\"';}; f(<DICT>)",
+        "<SIZE>" : "var f = function(dict){return dict[\"pointSize\"];}; f(<DICT>)"
+      }
     }
   },
   "UIColor" : {
