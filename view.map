@@ -1,6 +1,9 @@
 {
   "MSBitmapLayer" : {
     "viewClass" : "UIImageView",
+    "properties" : {
+      "NSImage" : "image"
+    }
   },
   "MSTextLayer" : {
     "viewClass" : "UILabel",
@@ -24,5 +27,8 @@
   },
   "NSFont" : {
     "viewClass" : "UIFont"
+  },
+  "NSImage" : {
+    "viewClass" : "UIImage"
   }
 }

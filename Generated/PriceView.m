@@ -25,7 +25,8 @@
 	_titleLabel.textColor = [UIColor colorWithRed:0.2039215686 green:0.2117647059 blue:0.2392156863 alpha:1];
 
 
-	_arrow = [UIView new];
+	_arrow = [UIImageView new];
+	_arrow.image =  [UIImage imageNamed:@"arrow"];
 
 
 
@@ -47,7 +48,7 @@
 	[_priceBarImageView setFrame:CGRectMake(60,23,173,9)];
 	[_priceLabel setFrame:CGRectMake(244,19,28,17)];
 	[_titleLabel setFrame:CGRectMake(9,18,43,17)];
-	[_arrow setFrame:CGRectMake(299,22,5,10)];
+	[_arrow setFrame:CGRectMake(298,21,8,12)];
 
 }
 @end

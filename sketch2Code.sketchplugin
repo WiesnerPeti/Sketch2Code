@@ -145,8 +145,6 @@ function configStringDefinitions(layer, varName, propertiesMap)
 
     enumerateDict(propertiesMap, function(key, propertyname){
 
-      var keyPath = [key componentsSeparatedByString:"."]
-
       var value = [layer valueForKeyPath:key]
 
       custom_log("ValyeForKeyPath :" + key + " " + value)
@@ -154,6 +152,15 @@ function configStringDefinitions(layer, varName, propertiesMap)
       if(value == nil)
       {
         return
+      }
+
+      //TEST!!
+      if([value isKindOfClass:[NSImage class]])
+      {
+          writeImageToFile(baseDir + "/" +  varName, value, 2);
+          var configString = "\t" + iVarName(varName) + "." + propertyname + " =  [UIImage imageNamed:@\"" + varName +"\"];"
+          [config addObject:configString]
+          return
       }
 
       var configString = nil
@@ -171,7 +178,7 @@ function configStringDefinitions(layer, varName, propertiesMap)
         var valueObj = evalBindigCode(code, valueAsDictionary)
 
         custom_log("Binding: " + binding + " value: " + valueObj)
-        
+
         createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
       })
 
@@ -349,11 +356,7 @@ function writeTextToFile(path, text)
      if (typeof path !== 'string')
          return false;
 
-     // create a NSString object from the given text
      var string = NSString.stringWithUTF8String(text);
-
-     // use the writeToFile method of the NSString object to write the text to the given URL
-
      var errorPointer = MOPointer.alloc().initWithValue(nil)
 
      var result = [string writeToFile:path atomically:1 encoding:NSUTF8StringEncoding error:errorPointer];
@@ -364,6 +367,14 @@ function writeTextToFile(path, text)
      }
 
      return result;
+}
+
+function writeImageToFile(path, image, scale)
+{
+    var finalPath = path + "@" + scale + "x.png"
+    var imgRep = [image representations][0];
+    var data = [imgRep representationUsingType:NSPNGFileType properties:nil];
+    [data writeToFile:finalPath atomically:1];
 }
 
 function get_dir_from_prompt(){
@@ -444,7 +455,7 @@ function objectAsDictionary(object)
 
           var value = getterMethod()
 
-          custom_log(propName + " - " + value + " - " + typeof value)
+          // custom_log(propName + " - " + value + " - " + typeof value)
 
           if(value == nil)
           {

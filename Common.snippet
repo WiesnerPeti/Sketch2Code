@@ -38,5 +38,18 @@
         "<string>" : "var f = function(dict){return dict[\"description\"];}; f(<DICT>)"
       }
     }
+  },
+  "UIImageView" : {
+    "create" : {
+      "template" : "[UIImageView new]",
+    }
+  },
+  "UIImage" : {
+    "create" : {
+      "template" : "[UIImage imageNamed:<NAME>]",
+      "bindings" : {
+        "<NAME>" : "var f = function(dict){return dict[\"name\"];}; f(<DICT>)"
+      }
+    }
   }
 }
