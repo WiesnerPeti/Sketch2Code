@@ -26,7 +26,7 @@
 
 
 	_arrow = [UIImageView new];
-	_arrow.image =  [UIImage imageNamed:@"arrow"];
+	_arrow.image = [UIImage imageNamed:@"arrow"];
 
 
 

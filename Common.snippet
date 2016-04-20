@@ -48,7 +48,7 @@
     "create" : {
       "template" : "[UIImage imageNamed:<NAME>]",
       "bindings" : {
-        "<NAME>" : "var f = function(dict){return dict[\"name\"];}; f(<DICT>)"
+        "<NAME>" : "var f = function(dict){return '@\"' + dict[\"name\"] + '\"';}; f(<DICT>)"
       }
     }
   }

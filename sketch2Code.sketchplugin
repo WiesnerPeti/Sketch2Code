@@ -154,25 +154,23 @@ function configStringDefinitions(layer, varName, propertiesMap)
         return
       }
 
-      //TEST!!
-      if([value isKindOfClass:[NSImage class]])
-      {
-          writeImageToFile(baseDir + "/" +  varName, value, 2);
-          var configString = "\t" + iVarName(varName) + "." + propertyname + " =  [UIImage imageNamed:@\"" + varName +"\"];"
-          [config addObject:configString]
-          return
-      }
-
       var configString = nil
-
-      var valueAsDictionary = objectAsDictionary(value)
       var valueClass = NSStringFromClass([value class])
-
       var viewClass = classMapping[valueClass][@"viewClass"]
       var viewDesc = viewDescriptors[viewClass]
       var createTemplate = viewDesc[@"create"][@"template"]
+      var valueAsDictionary = nil
 
-      //Not yet working (an MO* object is missing a copyWithZone:)
+      //This should be a different type of creation
+      if([value isKindOfClass:[NSImage class]])
+      {
+          writeImageToFile(baseDir + "/" +  varName, value, 2)
+          valueAsDictionary = {"name" : varName}
+      }
+      else {
+          valueAsDictionary = objectAsDictionary(value)
+      }
+
       enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
 
         var valueObj = evalBindigCode(code, valueAsDictionary)
