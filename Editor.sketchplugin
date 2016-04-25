@@ -8,48 +8,83 @@ if([selection count] == 0)
 
 var target = selection[0]
 var userInfo = [target userInfo]
-var userInfoString = JSON2String(userInfo)
 
-var updatedUserInfoString = doc.askForUserInput_initialValue("Provide user info for" + [target name], userInfoString)
-
-target.userInfo = String2JSON(updatedUserInfoString)
-
-function JSON2String(JSON)
+if(userInfo == nil)
 {
-  if (JSON == nil)
-  {
-    return ""
-  }
+   userInfo = [NSMutableDictionary new]
+}
+else
+{
+   userInfo = [userInfo mutableCopy]
+}
 
+custom_log("Current userInfo: "+userInfo)
+
+var viewClassString = userInfo["Sketch2Code.viewClass"]
+
+if(viewClassString == nil)
+{
+  var viewMap = loadObjectMap()
+  var targetClassName = NSStringFromClass([target class])
+  viewClassString = viewMap[targetClassName]["viewClass"] + ""
+}
+
+var updatedViewClassString = doc.askForUserInput_initialValue("Override default UIKit class for " + [target name], viewClassString)
+
+custom_log("New class: " + updatedViewClassString)
+
+userInfo["Sketch2Code.viewClass"] = updatedViewClassString
+
+target.userInfo = userInfo
+
+//Should be common
+function loadObjectMap()
+{
+    var path = pluginPath()
+
+    path = [path stringByAppendingString:@"view.map"]
+
+    custom_log("Loading map at:" + path)
+
+    id map = loadJSON(path)
+
+    custom_log("" + map)
+
+    custom_log("Map loading [Done]")
+
+    return map
+}
+
+function loadJSON(filePath)
+{
   var errorPointer = MOPointer.alloc().initWithValue(nil)
-  var parameterData = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:errorPointer]
+  var data = [NSData dataWithContentsOfFile:filePath options:0 error:errorPointer]
 
   if(errorPointer.value())
   {
     custom_log("Error:" + errorPointer.value())
   }
 
-  return [[NSString alloc] initWithData:parameterData encoding:4]
+  var json =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:errorPointer]
+
+  if(errorPointer.value())
+  {
+    custom_log("Error:" + errorPointer.value())
+  }
+
+  return json
 }
 
-function String2JSON(string)
+
+function pluginPath()
 {
-    var errorPointer = MOPointer.alloc().initWithValue(nil)
-    var data = [string dataUsingEncoding:NSUTF8StringEncoding];
+  var path = MSPluginManager.pluginsURL();
 
-    if (data == nil)
-    {
-      return {}
-    }
+  path = [path absoluteString]
+  path = [path stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+  path = [path stringByReplacingOccurrencesOfString:@"file://" withString:@""]
 
-    var json =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:errorPointer]
-
-    if(errorPointer.value())
-    {
-      custom_log("Error:" + errorPointer.value())
-    }
-
-    return json
+  return path
 }
 
 function custom_log(string)
