@@ -328,7 +328,7 @@ function loadJSON(filePath)
     custom_log("Error:" + errorPointer.value())
   }
 
-  id json =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:errorPointer]
+  var json =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:errorPointer]
 
   if(errorPointer.value())
   {

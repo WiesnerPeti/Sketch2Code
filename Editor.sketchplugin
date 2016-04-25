@@ -1,0 +1,58 @@
+// (ctrl shift e)
+
+if([selection count] == 0)
+{
+   custom_log("No selection found")
+   return
+}
+
+var target = selection[0]
+var userInfo = [target userInfo]
+var userInfoString = JSON2String(userInfo)
+
+var updatedUserInfoString = doc.askForUserInput_initialValue("Provide user info for" + [target name], userInfoString)
+
+target.userInfo = String2JSON(updatedUserInfoString)
+
+function JSON2String(JSON)
+{
+  if (JSON == nil)
+  {
+    return ""
+  }
+
+  var errorPointer = MOPointer.alloc().initWithValue(nil)
+  var parameterData = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:errorPointer]
+
+  if(errorPointer.value())
+  {
+    custom_log("Error:" + errorPointer.value())
+  }
+
+  return [[NSString alloc] initWithData:parameterData encoding:4]
+}
+
+function String2JSON(string)
+{
+    var errorPointer = MOPointer.alloc().initWithValue(nil)
+    var data = [string dataUsingEncoding:NSUTF8StringEncoding];
+
+    if (data == nil)
+    {
+      return {}
+    }
+
+    var json =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:errorPointer]
+
+    if(errorPointer.value())
+    {
+      custom_log("Error:" + errorPointer.value())
+    }
+
+    return json
+}
+
+function custom_log(string)
+{
+  log("SKETCH2CODE | " + string)
+}
