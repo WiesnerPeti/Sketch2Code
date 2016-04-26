@@ -12,6 +12,7 @@
 @interface ViewController : UIViewController
 {
     PriceView *_price;
+    NSTimer *_invalidateLayoutTimer;
 }
 
 @end
