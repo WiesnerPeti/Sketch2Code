@@ -163,7 +163,7 @@ function configStringDefinitions(layer, varName, propertiesMap)
       //This should be a different type of creation
       if([value isKindOfClass:[NSImage class]])
       {
-          writeImageToFile(baseDir + "/" +  varName, value, 2)
+          exportImageToFile(baseDir + "/" +  varName, layer)
           valueAsDictionary = {"name" : varName}
       }
       else {
@@ -425,12 +425,15 @@ function writeTextToFile(path, text)
      return result;
 }
 
-function writeImageToFile(path, image, scale)
+function exportImageToFile(path, layer)
 {
-    var finalPath = path + "@" + scale + "x.png"
-    var imgRep = [image representations][0];
-    var data = [imgRep representationUsingType:NSPNGFileType properties:nil];
-    [data writeToFile:finalPath atomically:1];
+    var finalPath = path + ".pdf"
+    var rect = [layer absoluteDirtyRect]
+    var slice = [MSExportRequest requestWithName:"ExportRequest" rect:rect]
+
+    custom_log("Saving slice: "+slice+" to path: "+finalPath)
+
+    [doc saveArtboardOrSlice:slice toFile:finalPath]
 }
 
 function get_dir_from_prompt(){
