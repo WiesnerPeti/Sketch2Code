@@ -3,13 +3,21 @@
     "create" : {
       "template" : "[UIView new]"
     },
-    "imports" : []
+    "imports" : [],
+    "properties" :{
+      "style.fill.color" : "backgroundColor"
+    }
   },
   "UILabel" : {
     "create" : {
       "template" : "[UILabel new]"
     },
-    "imports" : []
+    "imports" : [],
+    "properties" :{
+      "textColor" : "textColor",
+      "stringValue" : "text",
+      "font" : "font"
+    }
   },
   "UIFont" : {
     "create" : {
@@ -42,6 +50,9 @@
   "UIImageView" : {
     "create" : {
       "template" : "[UIImageView new]",
+    },
+    "properties" : {
+      "NSImage" : "image"
     }
   },
   "UIImage" : {

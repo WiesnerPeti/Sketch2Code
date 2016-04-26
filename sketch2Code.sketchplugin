@@ -73,20 +73,19 @@ function templateBinding(targetView)
     template[@"<CLASS_NAME>"] = [target name]
 
     custom_log("Collecting iVars and layout")
-    var iVars = [NSMutableArray array];
-    var inits = [NSMutableArray array];
-    var addSubviews = [NSMutableArray array];
-    var layouts = [NSMutableArray array];
+    var iVars = [NSMutableArray array]
+    var inits = [NSMutableArray array]
+    var addSubviews = [NSMutableArray array]
+    var layouts = [NSMutableArray array]
 
     visitLayerInGroup(target, function(layer){
 
       var layerName = [layer name]
-      var layerClass = NSStringFromClass([layer class]);
-      var mapDesc = classMapping[layerClass]
+      var layerClass = NSStringFromClass([layer class])
+      var viewClass = mappedClassNameForLayer(layer)
 
-      if(mapDesc != nil)
+      if(viewClass != nil)
       {
-          var viewClass = mapDesc[@"viewClass"]
           var viewDesc = viewDescriptors[viewClass]
 
           custom_log("Layer:" + layerClass + " name:" + layerName + " layerClass:" + viewClass + " viewDesc:" + viewDesc)
@@ -94,7 +93,7 @@ function templateBinding(targetView)
           var iVarString = iVarDeclaration(viewClass, layerName)
           [iVars addObject:"\t" + iVarString]
 
-          var initString = initDefinition(layer, layerName, viewDesc, mapDesc);
+          var initString = initDefinition(layer, layerName, viewDesc);
           [inits addObject:"\t" + initString]
 
           var addSubviewString = addSubviewDefinition(layerName);
@@ -121,7 +120,7 @@ function iVarDeclaration(className, varName)
   return className + " *" + iVarName(varName) + ";"
 }
 
-function initDefinition(layer, varName, viewDesc, mapDesc)
+function initDefinition(layer, varName, viewDesc)
 {
     var createString = viewDesc[@"create"][@"template"]
     var initString = iVarName(varName) + " " + "=" + " " + createString + ";"
@@ -129,7 +128,7 @@ function initDefinition(layer, varName, viewDesc, mapDesc)
     // objectAsDictionary(layer)
 
     //Config
-    var propertyMap = mapDesc[@"properties"]
+    var propertyMap = viewDesc[@"properties"]
     if(propertyMap != nil)
     {
       var configString = configStringDefinitions(layer, varName, propertyMap)
@@ -156,7 +155,7 @@ function configStringDefinitions(layer, varName, propertiesMap)
 
       var configString = nil
       var valueClass = NSStringFromClass([value class])
-      var viewClass = classMapping[valueClass][@"viewClass"]
+      var viewClass = classMapping[valueClass]
       var viewDesc = viewDescriptors[viewClass]
       var createTemplate = viewDesc[@"create"][@"template"]
       var valueAsDictionary = nil
@@ -198,13 +197,7 @@ function layoutDefinition(layer, varName)
 {
     var userInfo = [layer userInfo]
 
-    if(userInfo == nil)
-    {
-      var rect = "CGRectMake(" + Math.ceil(layer.frame().x()) + "," + Math.ceil(layer.frame().y()) + "," + Math.ceil(layer.frame().width()) + ","+ Math.ceil(layer.frame().height()) +")";
-      var layout = iVarName(varName) + " " + "setFrame:" + rect)
-      return messageSendText(layout) + ";"
-    }
-    else
+    if(userInfo != nil && userInfo["com.bouchenoiremarc.sketch-constraints"] != nil)
     {
       var constraintString = userInfo["com.bouchenoiremarc.sketch-constraints"]["@constraints"]
       var constraintJSON = dataToJSONObject([constraintString dataUsingEncoding:NSUTF8StringEncoding])
@@ -253,6 +246,12 @@ function layoutDefinition(layer, varName)
       }
 
       var layout = iVarName(varName) + " " + "setFrame:" + "CGRectMake(" + x + "," + y + "," + width + ","+ height +")"
+      return messageSendText(layout) + ";"
+    }
+    else
+    {
+      var rect = "CGRectMake(" + Math.ceil(layer.frame().x()) + "," + Math.ceil(layer.frame().y()) + "," + Math.ceil(layer.frame().width()) + ","+ Math.ceil(layer.frame().height()) +")";
+      var layout = iVarName(varName) + " " + "setFrame:" + rect)
       return messageSendText(layout) + ";"
     }
 }
@@ -446,6 +445,29 @@ function get_dir_from_prompt(){
       var message = [panel filename];
       return message;
     }
+}
+
+function mappedClassNameForLayer(layer)
+{
+  var userInfo = [layer userInfo]
+  var layerClass = NSStringFromClass([layer class]);
+  var className = classMapping[layerClass]
+
+  if(!userInfo)
+  {
+    return className
+  }
+
+  var customViewClassName = userInfo["Sketch2Code.viewClass"]
+
+  if(!customViewClassName)
+  {
+      return className;
+  }
+
+  custom_log("Custom className found: " + customViewClassName)
+
+  return customViewClassName
 }
 
 function enumerateDict(dict, block)

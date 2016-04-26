@@ -1,34 +1,9 @@
 {
-  "MSBitmapLayer" : {
-    "viewClass" : "UIImageView",
-    "properties" : {
-      "NSImage" : "image"
-    }
-  },
-  "MSTextLayer" : {
-    "viewClass" : "UILabel",
-    "properties" :{
-      "textColor" : "textColor",
-      "stringValue" : "text",
-      "font" : "font"
-    }
-  },
-  "MSShapeGroup" : {
-    "viewClass" : "UIView",
-    "properties" :{
-      "style.fill.color" : "backgroundColor"
-    }
-  },
-  "MSColor" : {
-    "viewClass" : "UIColor"
-  },
-  "NSBigMutableString" : {
-    "viewClass" : "NSString"
-  },
-  "NSFont" : {
-    "viewClass" : "UIFont"
-  },
-  "NSImage" : {
-    "viewClass" : "UIImage"
-  }
+  "MSBitmapLayer" : "UIImageView",
+  "MSTextLayer" : "UILabel",
+  "MSShapeGroup" : "UIView",
+  "MSColor" : "UIColor",
+  "NSBigMutableString" : "NSString",
+  "NSFont" : "UIFont",
+  "NSImage" : "UIImage"
 }
