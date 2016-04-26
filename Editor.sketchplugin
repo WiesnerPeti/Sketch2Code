@@ -26,7 +26,16 @@ if(viewClassString == nil)
 {
   var viewMap = loadObjectMap()
   var targetClassName = NSStringFromClass([target class])
-  viewClassString = viewMap[targetClassName]["viewClass"] + ""
+  var viewMapDescription = viewMap[targetClassName]
+
+  if(viewMapDescription)
+  {
+    viewClassString = viewMap[targetClassName]["viewClass"] + ""
+  }
+  else
+  {
+    viewClassString = targetClassName
+  }
 }
 
 var updatedViewClassString = doc.askForUserInput_initialValue("Override default UIKit class for " + [target name], viewClassString)
