@@ -196,13 +196,43 @@ function addSubviewDefinition(varName)
 
 function layoutDefinition(layer, varName)
 {
-    var layout = iVarName(varName) + " " + "setFrame:" + rectToString(layer.frame())
-    return messageSendText(layout) + ";"
-}
+    var userInfo = [layer userInfo]
 
-function rectToString(rect)
-{
-   return "CGRectMake(" + Math.ceil(rect.x()) + "," + Math.ceil(rect.y()) + "," + Math.ceil(rect.width()) + ","+ Math.ceil(rect.height()) +")"
+    if(userInfo == nil)
+    {
+      var rect = "CGRectMake(" + Math.ceil(layer.frame().x()) + "," + Math.ceil(layer.frame().y()) + "," + Math.ceil(layer.frame().width()) + ","+ Math.ceil(layer.frame().height()) +")";
+      var layout = iVarName(varName) + " " + "setFrame:" + rect)
+      return messageSendText(layout) + ";"
+    }
+    else
+    {
+      var constraintString = userInfo["com.bouchenoiremarc.sketch-constraints"]["@constraints"]
+      var constraintJSON = dataToJSONObject([constraintString dataUsingEncoding:NSUTF8StringEncoding])
+
+      custom_log("Constraints for " + varName + " : " + constraintJSON)
+
+      var alignVertical = constraintJSON["vertically"]
+      var alignHorizontal = constraintJSON["horizontaly"]
+      var leftMargin = constraintJSON["left"]
+      var rightMargin = constraintJSON["right"]
+      var topMargin = constraintJSON["top"]
+      var bottomMargin = constraintJSON["bottom"]
+
+      var x = Math.ceil(layer.frame().x()), y = Math.ceil(layer.frame().y()),width = Math.ceil(layer.frame().width()), height = Math.ceil(layer.frame().height());
+
+      if(alignVertical)
+      {
+          y = "self.bounds.size.width/2.0" + " - " + height + "/2.0"
+      }
+      else
+      {
+          y = topMargin
+          height = "self.bounds.size.height" + " - " + topMargin + " - " + bottom
+      }
+
+      var layout = iVarName(varName) + " " + "setFrame:" + "CGRectMake(" + x + "," + y + "," + width + ","+ height +")"
+      return messageSendText(layout) + ";"
+    }
 }
 
 function messageSendText(text)
@@ -328,7 +358,14 @@ function loadJSON(filePath)
     custom_log("Error:" + errorPointer.value())
   }
 
-  var json =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:errorPointer]
+  return dataToJSONObject(data)
+}
+
+function dataToJSONObject(data)
+{
+  var errorPointer = MOPointer.alloc().initWithValue(nil)
+
+  var json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:errorPointer]
 
   if(errorPointer.value())
   {
