@@ -136,9 +136,9 @@ function initDefinition(layer, varName, viewDesc)
     }
 
     //Export if needed
-    if([layer isKindOfClass:[MSBitmapLayer class]])
+    if(viewDesc["export"])
     {
-        exportImageToFile(baseDir + "/" +  varName, layer)
+        exportImageToFile(baseDir + "/" +  varName, layer, viewDesc["export"]["format"])
     }
 
     //Config
@@ -429,9 +429,9 @@ function writeTextToFile(path, text)
      return result;
 }
 
-function exportImageToFile(path, layer)
+function exportImageToFile(path, layer, format)
 {
-    var finalPath = path + ".pdf"
+    var finalPath = path + format
     var rect = [layer absoluteDirtyRect]
     var slice = [MSExportRequest requestWithName:"ExportRequest" rect:rect]
 
