@@ -25,10 +25,7 @@
 	_titleLabel.textColor = [UIColor colorWithRed:0.2039215686 green:0.2117647059 blue:0.2392156863 alpha:1];
 
 
-	_arrow = [UIImageView new];
-	_arrow.image = [UIImage imageNamed:@"arrow"];
-
-
+	_arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow"]];
 
 
 	[self addSubview:_backgroundView];

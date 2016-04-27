@@ -49,15 +49,7 @@
   },
   "UIImageView" : {
     "create" : {
-      "template" : "[UIImageView new]",
-    },
-    "properties" : {
-      "NSImage" : "image"
-    }
-  },
-  "UIImage" : {
-    "create" : {
-      "template" : "[UIImage imageNamed:<NAME>]",
+      "template" : "[[UIImageView alloc] initWithImage:[UIImage imageNamed:<NAME>]]",
       "bindings" : {
         "<NAME>" : "var f = function(dict){return '@\"' + dict[\"name\"] + '\"';}; f(<DICT>)"
       }
