@@ -15,7 +15,6 @@
 		F531D2041CBC2022006C5D83 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F531D2021CBC2022006C5D83 /* LaunchScreen.storyboard */; };
 		F531D2101CBC2404006C5D83 /* PriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F531D20F1CBC2404006C5D83 /* PriceView.m */; };
 		F571705C1CC7F116001F744E /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F571705B1CC7F10E001F744E /* SourceSansPro-Regular.ttf */; };
-		F571705E1CC82A6D001F744E /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F571705D1CC82A6C001F744E /* arrow@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -148,7 +147,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F571705C1CC7F116001F744E /* SourceSansPro-Regular.ttf in Resources */,
-				F571705E1CC82A6D001F744E /* arrow@2x.png in Resources */,
 				F531D2041CBC2022006C5D83 /* LaunchScreen.storyboard in Resources */,
 				F531D2011CBC2022006C5D83 /* Assets.xcassets in Resources */,
 				F531D1FF1CBC2022006C5D83 /* Main.storyboard in Resources */,
