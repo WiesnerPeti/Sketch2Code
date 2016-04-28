@@ -21,7 +21,6 @@ var webView = [WebView new]
 
 custom_log("baseDir:" + baseDir)
 
-//Currently only that is supported
 var classMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
 var targetTemplates = loadSnippet("UITableViewCell")
@@ -45,8 +44,7 @@ writeTextToFile(baseDir + "/" + [target name] + ".m", implementationContent)
 
 custom_log("Writing files [Done]")
 
-///////////////FUNCTIONS///////////////
-
+//Generates the "empty" header code with bindings in it
 function interfaceCode(snippet)
 {
     var headerSnippetPart = snippet[@"header"]
@@ -55,6 +53,7 @@ function interfaceCode(snippet)
                        headerSnippetPart[@"interface_tag"]])
 }
 
+//Generates the "empty" implementation code with bindings in it
 function implementationCode(snippet)
 {
     var implementationSnippetPart = snippet[@"implementation"]
@@ -66,6 +65,7 @@ function implementationCode(snippet)
                        implementationSnippetPart[@"implementation_tag"][1]]])
 }
 
+//Takes the file template (either header or implementation) and replaces the bindings in it
 function templateBinding(targetView)
 {
     var template = [NSMutableDictionary dictionary]
@@ -112,14 +112,13 @@ function templateBinding(targetView)
     return template
 }
 
-////
-// Rendering
-///
+//Generates the command lines for variable declaration
 function iVarDeclaration(className, varName)
 {
   return className + " *" + iVarName(varName) + ";"
 }
 
+//Generates the initialisation command lines for a layer
 function initDefinition(layer, varName, viewDesc)
 {
     var createString = viewDesc["create"]["template"]
@@ -152,6 +151,7 @@ function initDefinition(layer, varName, viewDesc)
     return initString
 }
 
+//Generates the command lines to customize the layer
 function configStringDefinitions(layer, varName, propertiesMap)
 {
     var config = [NSMutableArray array]
@@ -191,12 +191,14 @@ function configStringDefinitions(layer, varName, propertiesMap)
     return renderItems(config)
 }
 
+//Generates the command lines to join the view hierarchy
 function addSubviewDefinition(varName)
 {
     var addSubview = "self" + " " + "addSubview:" + iVarName(varName)
     return messageSendText(addSubview) + ";"
 }
 
+//Generates the layouting command lines for the given layer and name
 function layoutDefinition(layer, varName)
 {
     var userInfo = [layer userInfo]
@@ -215,6 +217,7 @@ function layoutDefinition(layer, varName)
       var topMargin = constraintJSON["top"] || 0
       var bottomMargin = constraintJSON["bottom"] || 0
 
+      //TODO: This should be customizable
       var x = Math.ceil(layer.frame().x()), y = Math.ceil(layer.frame().y()),width = Math.ceil(layer.frame().width()), height = Math.ceil(layer.frame().height());
 
       if(alignVertical)
@@ -276,6 +279,7 @@ function renderItems(items)
   return renderItemsWithSeparator(items, separator)
 }
 
+//Renders the lines with the given separator
 function renderItemsWithSeparator(items, separator)
 {
   var renderedString = @""
@@ -298,9 +302,7 @@ function renderItemsWithSeparator(items, separator)
   return renderedString
 }
 
-//Parses the layer of the selected group
-//MSLayerGroup -> layer of view structs
-//Where view structs contains init, addition and layout update template codes
+//Enumerates on the children of the layer group
 function visitLayerInGroup(targetGroup, block)
 {
    var layers = []
@@ -357,7 +359,7 @@ function loadObjectMap()
     return map
 }
 
-// name of the class -> struct that contains the header and implementation template
+//Loads a snippet json
 function loadSnippet(snippetName)
 {
   var filePath = pluginPath();
@@ -373,6 +375,11 @@ function loadSnippet(snippetName)
   return snippet
 }
 
+////
+//  COMMON (Should be in a separate file)
+////
+
+//General function to load a JSON from a filePath
 function loadJSON(filePath)
 {
   var errorPointer = MOPointer.alloc().initWithValue(nil)
@@ -386,6 +393,7 @@ function loadJSON(filePath)
   return dataToJSONObject(data)
 }
 
+//Converts NSData to JSON serialzed object
 function dataToJSONObject(data)
 {
   var errorPointer = MOPointer.alloc().initWithValue(nil)
@@ -400,6 +408,7 @@ function dataToJSONObject(data)
   return json
 }
 
+//Path to the plugins folder (to reach snippets and view mapping)
 function pluginPath()
 {
   var path = MSPluginManager.pluginsURL();
@@ -455,6 +464,7 @@ function get_dir_from_prompt(){
     }
 }
 
+//Gets the UIKit class name for the Sketch object
 function mappedClassNameForLayer(layer)
 {
   var userInfo = [layer userInfo]
@@ -496,6 +506,7 @@ function enumerateArray(array, block)
   }
 }
 
+//Evaluates the JS code written for the bindings
 function evalBindigCode(code, parameter)
 {
     var errorPointer = MOPointer.alloc().initWithValue(nil)
@@ -514,6 +525,7 @@ function evalBindigCode(code, parameter)
     return returnValue
 }
 
+//Returns the plain dictionary representation of the object
 function objectAsDictionary(object)
 {
     if([object isKindOfClass:[NSDictionary class]])
