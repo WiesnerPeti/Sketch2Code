@@ -5,7 +5,8 @@
     },
     "imports" : [],
     "properties" :{
-      "style.fill.color" : "backgroundColor"
+      "style.fill.color" : "backgroundColor",
+      "layers.firstObject.fixedRadius" : "layer.cornerRadius"
     }
   },
   "UILabel" : {
@@ -39,14 +40,6 @@
       }
     }
   },
-  "NSString" : {
-    "create" : {
-      "template" : "@\"<string>\"",
-      "bindings" : {
-        "<string>" : "var f = function(dict){return dict[\"description\"];}; f(<DICT>)"
-      }
-    }
-  },
   "UIImageView" : {
     "create" : {
       "template" : "[[UIImageView alloc] initWithImage:[UIImage imageNamed:<NAME>]]",
@@ -56,6 +49,22 @@
     },
     "export" : {
       "format": "pdf"
+    }
+  },
+  "NSString" : {
+    "create" : {
+      "template" : "@\"<string>\"",
+      "bindings" : {
+        "<string>" : "var f = function(dict){return dict[\"description\"];}; f(<DICT>)"
+      }
+    }
+  },
+  "Identity" : {
+    "create" : {
+      "template" : "<identity>",
+      "bindings" : {
+        "<identity>" : "var f = function(dict){return dict[\"description\"];}; f(<DICT>)"
+      }
     }
   }
 }
