@@ -24,7 +24,7 @@
       "template" : "[UIFont fontWithName:<NAME> size:<SIZE>]",
       "bindings" : {
         "<NAME>" : "var f = function(dict){return '@\"' + dict[\"fontName\"] + '\"';}; f(<DICT>)",
-        "<SIZE>" : "var f = function(dict){return dict[\"pointSize\"];}; f(<DICT>)"
+        "<SIZE>" : "var f = function(dict){return Math.ceil(dict[\"pointSize\"]);}; f(<DICT>)"
       }
     }
   },
@@ -32,10 +32,10 @@
     "create" : {
       "template" : "[UIColor colorWithRed:<r> green:<g> blue:<b> alpha:<a>]",
       "bindings" : {
-        "<r>" : "var f = function(dict){return dict[\"red\"];}; f(<DICT>)",
-        "<g>" : "var f = function(dict){return dict[\"green\"];}; f(<DICT>)",
-        "<b>" : "var f = function(dict){return dict[\"blue\"];}; f(<DICT>)",
-        "<a>" : "var f = function(dict){return dict[\"alpha\"];}; f(<DICT>)"
+        "<r>" : "var f = function(dict){return Number(dict[\"red\"].toFixed(4))}; f(<DICT>)",
+        "<g>" : "var f = function(dict){return Number(dict[\"green\"].toFixed(4));}; f(<DICT>)",
+        "<b>" : "var f = function(dict){return Number(dict[\"blue\"].toFixed(4));}; f(<DICT>)",
+        "<a>" : "var f = function(dict){return Number(dict[\"alpha\"].toFixed(4));}; f(<DICT>)"
       }
     }
   },

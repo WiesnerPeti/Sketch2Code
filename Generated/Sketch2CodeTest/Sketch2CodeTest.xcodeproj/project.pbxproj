@@ -31,7 +31,6 @@
 		F531D20E1CBC2404006C5D83 /* PriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PriceView.h; path = ../../PriceView.h; sourceTree = "<group>"; };
 		F531D20F1CBC2404006C5D83 /* PriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PriceView.m; path = ../../PriceView.m; sourceTree = "<group>"; };
 		F571705B1CC7F10E001F744E /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
-		F571705D1CC82A6C001F744E /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "arrow@2x.png"; path = "../../arrow@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +63,6 @@
 		F531D1F31CBC2022006C5D83 /* Sketch2CodeTest */ = {
 			isa = PBXGroup;
 			children = (
-				F571705D1CC82A6C001F744E /* arrow@2x.png */,
 				F531D20E1CBC2404006C5D83 /* PriceView.h */,
 				F531D20F1CBC2404006C5D83 /* PriceView.m */,
 				F531D1F71CBC2022006C5D83 /* AppDelegate.h */,
