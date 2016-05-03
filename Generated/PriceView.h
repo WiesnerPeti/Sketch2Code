@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-@interface PriceView : UITableViewCell
+@interface PriceView : UIView
 {
 	UIView *_backgroundView;
 	UIView *_priceBarImageView;
