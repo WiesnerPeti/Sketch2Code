@@ -19,7 +19,7 @@
     
     self.view.backgroundColor = [UIColor grayColor];
     
-    _price = [[PriceView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Identifier"];
+    _price = [[PriceView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:_price];
     
     _invalidateLayoutTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(invalidatePriceViewLayout) userInfo:nil repeats:YES];

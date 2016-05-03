@@ -4,7 +4,7 @@
       "#import <UIKit/UIKit.h>"
     ],
     "interface_tag":[
-      "@interface <CLASS_NAME> : UITableViewCell",
+      "@interface <CLASS_NAME> : UIView",
       "{",
       "<SUBVIEW_DECLARATION>",
       "}",
@@ -20,9 +20,9 @@
         "@end"
       ],
       "create":[
-        "- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier",
+        "- (instancetype)initWithFrame:(CGRect)frame",
         "{",
-        "    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];",
+        "    self = [super initWithFrame:frame];",
         "    if(self)",
         "    {",
         "<SUBVIEW_INIT>",
