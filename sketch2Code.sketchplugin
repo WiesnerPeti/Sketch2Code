@@ -450,7 +450,7 @@ function writeTextToFile(path, text)
 
 function exportImageToFile(path, layer, format)
 {
-    var finalPath = path + format
+    var finalPath = path + "." + format
     var rect = [layer absoluteDirtyRect]
     var slice = [MSExportRequest requestWithName:"ExportRequest" rect:rect]
     [slice setIncludeArtboardBackground:false];

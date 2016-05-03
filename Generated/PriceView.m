@@ -6,12 +6,12 @@
     if(self)
     {
 	_backgroundView = [UIView new];
-	_backgroundView.layer.cornerRadius = 0.8533333333333334;
+	_backgroundView.layer.cornerRadius = 1;
 	_backgroundView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
 
 
 	_priceBarImageView = [UIView new];
-	_priceBarImageView.layer.cornerRadius = 4.266666666666667;
+	_priceBarImageView.layer.cornerRadius = 4;
 	_priceBarImageView.backgroundColor = [UIColor colorWithRed:0 green:0.5176470588235293 blue:1 alpha:1];
 
 
