@@ -24,7 +24,7 @@ custom_log("baseDir:" + baseDir)
 var classMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
 
-var targetSnippetName = mappedClassNameForLayer(target) || "UITableViewCell"
+var targetSnippetName = mappedClassNameForLayer(target) || "UIView"
 var targetTemplates = loadSnippet(targetSnippetName)
 
 custom_log("Assembling snippet")
