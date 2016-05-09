@@ -24,7 +24,7 @@ custom_log("baseDir:" + baseDir)
 var classMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
 
-var targetSnippetName = mappedClassNameForLayer(target) || "UITableViewCell"
+var targetSnippetName = mappedClassNameForLayer(target) || "UIView"
 var targetTemplates = loadSnippet(targetSnippetName)
 
 custom_log("Assembling snippet")
@@ -34,6 +34,7 @@ var implementationContent = implementationCode(targetTemplates)
 
 custom_log("Replacing template tags")
 
+var layersToSave = [NSMutableArray new];
 var templateParts = templateBinding(target);
 
 interfaceContent = templateCodeWithDictionary(interfaceContent, templateParts)
@@ -79,6 +80,7 @@ function templateBinding(targetView)
     var inits = [NSMutableArray array]
     var addSubviews = [NSMutableArray array]
     var layouts = [NSMutableArray array]
+    var allLayers = [NSMutableArray array]
 
     visitLayerInGroup(target, function(layer){
 
@@ -104,7 +106,36 @@ function templateBinding(targetView)
           var layoutString = layoutDefinition(layer, layerName)
           [layouts addObject:"\t" + layoutString]
       }
+
+      [allLayers addObject:layer]
+
+      //Set the layer hidden for exporting
+      [layer setIsVisible:false]
+
     })
+
+    //Make the real export
+    enumerateArray(layersToSave, function(layer){
+
+      [layer setIsVisible:true]
+
+      var layerName = [layer name]
+      var layerClass = NSStringFromClass([layer class])
+      var viewClass = mappedClassNameForLayer(layer)
+      var viewDesc = viewDescriptors[viewClass]
+      exportImageToFile(baseDir + "/" +  layerName, layer, viewDesc["export"]["format"])
+
+      [layer setIsVisible:false]
+
+    })
+
+    enumerateArray(allLayers, function(layer){
+
+      //Set back all of the layer visibilities
+      [layer setIsVisible:true]
+
+    })
+
 
     template[@"<SUBVIEW_DECLARATION>"] = renderItems(iVars)
     template[@"<SUBVIEW_INIT>"] = renderItems(inits)
@@ -141,7 +172,7 @@ function initDefinition(layer, varName, viewDesc)
     //Export if needed
     if(viewDesc["export"])
     {
-        exportImageToFile(baseDir + "/" +  varName, layer, viewDesc["export"]["format"])
+        [layersToSave addObject:layer]
     }
 
     //Config
