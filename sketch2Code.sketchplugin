@@ -126,6 +126,8 @@ function initDefinition(layer, varName, viewDesc)
     var createString = viewDesc["create"]["template"]
     var initString = [NSString stringWithString:iVarName(varName) + " " + "=" + " " + createString + ";"]
 
+    // objectAsDictionary(layer)
+
     //resolve init bindings
     if(viewDesc["create"]["bindings"])
     {
@@ -169,8 +171,16 @@ function configStringDefinitions(layer, varName, propertiesMap)
         return
       }
 
-      var configString = nil
       var valueClass = NSStringFromClass([value class])
+
+      if(valueClass == nil)
+      {
+          return
+      }
+
+      custom_log("Value class :" + valueClass + " key:" + key)
+
+      var configString = nil
       var viewClass = classMapping[valueClass]
       var viewDesc = viewDescriptors[viewClass]
       var createTemplate = viewDesc[@"create"][@"template"]
