@@ -36,7 +36,7 @@ custom_log("Replacing template tags")
 
 var templateParts = templateBinding(target);
 
-var layersToSave
+var layersToSave;
 
 interfaceContent = templateCodeWithDictionary(interfaceContent, templateParts)
 implementationContent = templateCodeWithDictionary(implementationContent, templateParts)
@@ -81,10 +81,9 @@ function templateBinding(targetView)
     var inits = [NSMutableArray array]
     var addSubviews = [NSMutableArray array]
     var layouts = [NSMutableArray array]
-    layersToSave = [NSMutableArray array]
     var allLayers = [NSMutableArray array]
 
-
+    layersToSave = [NSMutableArray array]
     visitLayerInGroup(target, function(layer){
 
       var layerName = [layer name]
@@ -108,10 +107,13 @@ function templateBinding(targetView)
 
           var layoutString = layoutDefinition(layer, layerName)
           [layouts addObject:"\t" + layoutString]
-          [allLayers addObject:layer]
-          //Set the layer hidden for exporting
-          [layer setIsVisible:false]
       }
+
+      [allLayers addObject:layer]
+
+      //Set the layer hidden for exporting
+      [layer setIsVisible:false]
+
     })
 
     //Make the real export
