@@ -34,9 +34,8 @@ var implementationContent = implementationCode(targetTemplates)
 
 custom_log("Replacing template tags")
 
+var layersToSave = [NSMutableArray new];
 var templateParts = templateBinding(target);
-
-var layersToSave;
 
 interfaceContent = templateCodeWithDictionary(interfaceContent, templateParts)
 implementationContent = templateCodeWithDictionary(implementationContent, templateParts)
@@ -83,7 +82,6 @@ function templateBinding(targetView)
     var layouts = [NSMutableArray array]
     var allLayers = [NSMutableArray array]
 
-    layersToSave = [NSMutableArray array]
     visitLayerInGroup(target, function(layer){
 
       var layerName = [layer name]
@@ -125,10 +123,10 @@ function templateBinding(targetView)
       var layerClass = NSStringFromClass([layer class])
       var viewClass = mappedClassNameForLayer(layer)
       var viewDesc = viewDescriptors[viewClass]
-      exportImageToFile(baseDir + "/" +  layerName, layer, viewDesc["export"]["format"])  
+      exportImageToFile(baseDir + "/" +  layerName, layer, viewDesc["export"]["format"])
 
       [layer setIsVisible:false]
-      
+
     })
 
     enumerateArray(allLayers, function(layer){
@@ -137,7 +135,7 @@ function templateBinding(targetView)
       [layer setIsVisible:true]
 
     })
-    
+
 
     template[@"<SUBVIEW_DECLARATION>"] = renderItems(iVars)
     template[@"<SUBVIEW_INIT>"] = renderItems(inits)
