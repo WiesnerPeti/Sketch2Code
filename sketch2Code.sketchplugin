@@ -23,12 +23,14 @@ custom_log("baseDir:" + baseDir)
 
 var classMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
-var targetTemplates = loadSnippet("UITableViewCell")
+
+var targetSnippetName = mappedClassNameForLayer(target) || "UITableViewCell"
+var targetTemplates = loadSnippet(targetSnippetName)
 
 custom_log("Assembling snippet")
 
-var interfaceContent = interfaceCode(targetTemplates["UITableViewCell"])
-var implementationContent = implementationCode(targetTemplates["UITableViewCell"])
+var interfaceContent = interfaceCode(targetTemplates)
+var implementationContent = implementationCode(targetTemplates)
 
 custom_log("Replacing template tags")
 

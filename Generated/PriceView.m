@@ -1,8 +1,8 @@
 #import "PriceView.h"
 @implementation PriceView
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithFrame:frame];
     if(self)
     {
 	_backgroundView = [UIView new];
