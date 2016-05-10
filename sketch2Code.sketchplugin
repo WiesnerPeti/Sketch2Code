@@ -313,7 +313,8 @@ function messageSendText(text)
 
 function iVarName(varName)
 {
-  return "_" + varName;
+  var sanitizedVarName = [varName stringByReplacingOccurrencesOfString:" " withString:""]
+  return "_" + sanitizedVarName;
 }
 
 function renderItems(items)
