@@ -12,19 +12,21 @@
 
 	_priceBarImageView = [UIView new];
 	_priceBarImageView.layer.cornerRadius = 4;
-	_priceBarImageView.backgroundColor = [UIColor colorWithRed:0 green:0.5176470588235293 blue:1 alpha:1];
+	_priceBarImageView.backgroundColor = [UIColor colorWithRed:0 green:0.5176 blue:1 alpha:1];
 
 
 	_priceLabel = [UILabel new];
+	_priceLabel.textColor = [UIColor colorWithRed:0.2039 green:0.2118 blue:0.2392 alpha:1];
+	_priceLabel.alpha = 0.7502915111940298;
 	_priceLabel.text = @"$220";
-	_priceLabel.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:13.65333333333333];
-	_priceLabel.textColor = [UIColor colorWithRed:0.2039215686 green:0.2117647059 blue:0.2392156863 alpha:1];
+	_priceLabel.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
 
 
 	_titleLabel = [UILabel new];
+	_titleLabel.textColor = [UIColor colorWithRed:0.2039 green:0.2118 blue:0.2392 alpha:1];
+	_titleLabel.alpha = 1;
 	_titleLabel.text = @"Section";
-	_titleLabel.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:13.65333333333333];
-	_titleLabel.textColor = [UIColor colorWithRed:0.2039215686 green:0.2117647059 blue:0.2392156863 alpha:1];
+	_titleLabel.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
 
 
 	_arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow"]];
