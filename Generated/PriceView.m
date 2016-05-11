@@ -16,15 +16,17 @@
 
 
 	_priceLabel = [UILabel new];
+	_priceLabel.textColor = [UIColor colorWithRed:0.2039 green:0.2118 blue:0.2392 alpha:1];
+	_priceLabel.alpha = 0.7502915111940298;
 	_priceLabel.text = @"$220";
 	_priceLabel.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
-	_priceLabel.textColor = [UIColor colorWithRed:0.2039 green:0.2118 blue:0.2392 alpha:1];
 
 
 	_titleLabel = [UILabel new];
+	_titleLabel.textColor = [UIColor colorWithRed:0.2039 green:0.2118 blue:0.2392 alpha:1];
+	_titleLabel.alpha = 1;
 	_titleLabel.text = @"Section";
 	_titleLabel.font = [UIFont fontWithName:@"SourceSansPro-Bold" size:14];
-	_titleLabel.textColor = [UIColor colorWithRed:0.2039 green:0.2118 blue:0.2392 alpha:1];
 
 
 	_arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow"]];
