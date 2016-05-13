@@ -34,6 +34,7 @@ var implementationContent = implementationCode(targetTemplates)
 
 custom_log("Replacing template tags")
 
+var generatedNamesCache = [NSMutableDictionary new];
 var layersToSave = [NSMutableArray new];
 var templateParts = templateBinding(target);
 
@@ -313,7 +314,13 @@ function messageSendText(text)
 
 function iVarName(varName)
 {
-  return "_" + varName;
+  if (!generatedNamesCache[varName])
+  {
+    var sanitizedVarName = [varName stringByReplacingOccurrencesOfString:" " withString:""]  
+    generatedNamesCache[varName] = "_" + sanitizedVarName;
+  }
+
+  return generatedNamesCache[varName];
 }
 
 function renderItems(items)
