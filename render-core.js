@@ -2,6 +2,44 @@
 //  Contains the core render methods
 //
 
+@import "./common.js"
+
+function visitLayerHandler(target)
+{
+    if([target isMemberOfClass:[MSLayerGroup class]])
+    {
+        custom_log("Converting:" + target)
+        convertTarget(target)
+        visitLayerInGroup(target, visitLayerHandler)
+    }
+}
+
+function convertTarget(target)
+{
+  var targetSnippetName = mappedClassNameForLayer(target) || "UIView"
+  var targetTemplates = loadSnippet(targetSnippetName)
+
+  custom_log("Assembling snippet")
+
+  var interfaceContent = interfaceCode(targetTemplates)
+  var implementationContent = implementationCode(targetTemplates)
+
+  custom_log("Replacing template tags")
+
+  layersToSave = [NSMutableArray new];
+  templateParts = templateBinding(target);
+
+  interfaceContent = templateCodeWithDictionary(interfaceContent, templateParts)
+  implementationContent = templateCodeWithDictionary(implementationContent, templateParts)
+
+  custom_log("Writing files")
+
+  writeTextToFile(baseDir + "/" + [target name] + ".h", interfaceContent)
+  writeTextToFile(baseDir + "/" + [target name] + ".m", implementationContent)
+
+  custom_log("Writing files [Done]")
+}
+
 //Generates the "empty" header code with bindings in it
 function interfaceCode(snippet)
 {
@@ -24,7 +62,7 @@ function implementationCode(snippet)
 }
 
 //Takes the file template (either header or implementation) and replaces the bindings in it
-function templateBinding(targetView)
+function templateBinding(target)
 {
     var template = [NSMutableDictionary dictionary]
 
@@ -270,7 +308,7 @@ function iVarName(varName)
 {
   if (!generatedNamesCache[varName])
   {
-    var sanitizedVarName = [varName stringByReplacingOccurrencesOfString:" " withString:""]  
+    var sanitizedVarName = [varName stringByReplacingOccurrencesOfString:" " withString:""]
     generatedNamesCache[varName] = "_" + sanitizedVarName;
   }
 
@@ -309,20 +347,14 @@ function renderItemsWithSeparator(items, separator)
 //Enumerates on the children of the layer group
 function visitLayerInGroup(targetGroup, block)
 {
-   var layers = []
+  enumerateArray([targetGroup children], function(layer){
 
-   var loop = [[targetGroup children] objectEnumerator];
-   while(layer = [loop nextObject])
-   {
-      if (layer == target)
+      if(layer == targetGroup)
       {
-         continue
+        return;
       }
-
       block(layer)
-   }
-
-   return layers
+  })
 }
 
 //Replaces the bindings defined in dictionary in the tempate string
@@ -350,7 +382,7 @@ function mappedClassNameForLayer(layer)
 
   if(!userInfo)
   {
-    return className
+      return className
   }
 
   var customViewClassName = userInfo["Sketch2Code.viewClass"]

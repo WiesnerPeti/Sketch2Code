@@ -12,47 +12,30 @@ if([selection count] == 0)
    return
 }
 
-var target = selection[0]
+var selectedItem = selection[0]
 
-if (![target isKindOfClass:[MSLayerGroup class]])
+if (![selectedItem isKindOfClass:[MSLayerGroup class]])
 {
    custom_log("Not a group")
    return
 }
 
-custom_log("Target:" + target)
+custom_log("Target:" + selectedItem)
 
 var baseDir = get_dir_from_prompt()
-var webView = [WebView new]
 
 custom_log("baseDir:" + baseDir)
+
+var webView = [WebView new]
+var generatedNamesCache = [NSMutableDictionary new]
 
 var classMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
 
-var targetSnippetName = mappedClassNameForLayer(target) || "UIView"
-var targetTemplates = loadSnippet(targetSnippetName)
+var layersToSave;
+var templateParts;
 
-custom_log("Assembling snippet")
-
-var interfaceContent = interfaceCode(targetTemplates)
-var implementationContent = implementationCode(targetTemplates)
-
-custom_log("Replacing template tags")
-
-var generatedNamesCache = [NSMutableDictionary new];
-var layersToSave = [NSMutableArray new];
-var templateParts = templateBinding(target);
-
-interfaceContent = templateCodeWithDictionary(interfaceContent, templateParts)
-implementationContent = templateCodeWithDictionary(implementationContent, templateParts)
-
-custom_log("Writing files")
-
-writeTextToFile(baseDir + "/" + [target name] + ".h", interfaceContent)
-writeTextToFile(baseDir + "/" + [target name] + ".m", implementationContent)
-
-custom_log("Writing files [Done]")
+visitLayerInGroup(selectedItem, visitLayerHandler)
 
 function get_dir_from_prompt(){
     var panel = [NSOpenPanel openPanel];
