@@ -1,5 +1,6 @@
 // (ctrl shift p)
 
+@import "./common.js"
 @import "./runtime.js"
 @import "./io.js"
 
@@ -426,24 +427,6 @@ function mappedClassNameForLayer(layer)
   custom_log("Custom className found: " + customViewClassName)
 
   return customViewClassName
-}
-
-function enumerateDict(dict, block)
-{
-  var loop = [[dict allKeys] objectEnumerator]
-  while (key = loop.nextObject()) {
-      var value = dict[key]
-
-      block(key, value)
-  }
-}
-
-function enumerateArray(array, block)
-{
-  var loop = [array objectEnumerator]
-  while (item = loop.nextObject()) {
-      block(item)
-  }
 }
 
 //Evaluates the JS code written for the bindings
