@@ -32,9 +32,6 @@ var generatedNamesCache = [NSMutableDictionary new]
 var classMapping = loadObjectMap()
 var viewDescriptors = loadSnippet("Common")
 
-var layersToSave;
-var templateParts;
-
 visitLayerInGroup(selectedItem, visitLayerHandler)
 
 function get_dir_from_prompt(){

@@ -4,6 +4,9 @@
 
 @import "./common.js"
 
+var layersToSave;
+var templateParts;
+
 function visitLayerHandler(target)
 {
     if([target isMemberOfClass:[MSLayerGroup class]])
