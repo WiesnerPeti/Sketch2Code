@@ -51,7 +51,7 @@ function objectAsDictionary(object)
               dict[propName] = value
           }
         } catch (e) {
-
+          custom_log(e)
         }
     }
 
