@@ -4,6 +4,7 @@ echo "I need to write to ~/Library/Application\ Support"
 
 pluginFiles=(
 	"sketch2Code.sketchplugin"
+	"render-core.js"
 	"runtime.js"
 	"io.js"
 	"common.js"
