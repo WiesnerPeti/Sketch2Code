@@ -1,6 +1,7 @@
 // (ctrl shift p)
 
 @import "./common.js"
+@import "./logger.js"
 @import "./runtime.js"
 @import "./io.js"
 
@@ -446,9 +447,4 @@ function evalBindigCode(code, parameter)
     var returnValue = [webView stringByEvaluatingJavaScriptFromString:script];
 
     return returnValue
-}
-
-function custom_log(string)
-{
-  log("SKETCH2CODE | " + string)
 }

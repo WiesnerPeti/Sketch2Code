@@ -2,7 +2,7 @@
 
 echo "I need to write to ~/Library/Application\ Support"
 
-for file in "sketch2Code.sketchplugin" "runtime.js" "io.js" "common.js" "Editor.sketchplugin" "Common.snippet" "UITableViewCell.snippet" "UIView.snippet" "view.map";
+for file in "sketch2Code.sketchplugin" "runtime.js" "io.js" "common.js" "logger.js" "Editor.sketchplugin" "Common.snippet" "UITableViewCell.snippet" "UIView.snippet" "view.map";
 do
   filePath="./$file"
   sudo cp -f $filePath ~/Library/Application\ Support/com.bohemiancoding.sketch3/Plugins
