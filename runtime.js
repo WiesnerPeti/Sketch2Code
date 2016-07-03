@@ -2,12 +2,15 @@
 //  Contains methods to operate on the JavasCript-Objective-C runtime
 //
 
+@import "./common.js"
+@import "./logger.js"
+
 //Returns the plain dictionary representation of the object
 function objectAsDictionary(object)
 {
     if([object isKindOfClass:[NSDictionary class]])
     {
-        var serializedDictionary = serializeDictionaryUsingDateFormatKey(object)]
+        var serializedDictionary = getValueFromDictionary(object)]
         return serializedDictionary
     }
 
@@ -40,7 +43,7 @@ function objectAsDictionary(object)
 
           if(typeof value == 'object' && ([propName rangeOfString:"class"].location == NSNotFound))
           {
-             value = serializeValueUsingDateFormatKey(value)
+             value = getValue(value)
           }
 
           if(typeof value != 'object' || isJSONReady(value))
@@ -57,11 +60,11 @@ function objectAsDictionary(object)
     return dict;
 }
 
-function serializeValueUsingDateFormatKey(value)
+function getValue(value)
 {
       if([value isKindOfClass:[NSArray class]])
       {
-          // return serializeArrayUsingDateFormatKey(value);
+          // return getValueFromArray(value);
       }
       else if(isJSONReady(value))
       {
@@ -69,7 +72,7 @@ function serializeValueUsingDateFormatKey(value)
       }
       else if([value isKindOfClass:[NSDictionary class]])
       {
-          // return serializeDictionaryUsingDateFormatKey(value);
+          // return getValueFromDictionary(value);
       }
       else if(value)
       {
@@ -79,43 +82,36 @@ function serializeValueUsingDateFormatKey(value)
       return nil;
 }
 
-function isJSONReady(value)
-{
-    return [value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]] || (typeof value == "number");
-}
-
-function serializeDictionaryUsingDateFormatKey(dictionary)
+function getValueFromDictionary(dictionary)
 {
     var serializableDictionary = [NSMutableDictionary new];
-    var loop = [[dictionary allKeys] objectEnumerator]
-    while (dictKey = loop.nextObject()) {
-        var dictValue = dictionary[dictKey]
+    enumerateDict(dict, function(key, value){
 
-        var serializedValue = serializeValueUsingDateFormatKey(dictValue);
+        var serializedValue = getValue(value);
 
         if(serializedValue)
         {
-            serializableDictionary[dictKey] = serializedValue;
+            serializableDictionary[key] = serializedValue;
         }
-    }
-
+    })
+    
     return serializableDictionary;
 }
 
-function serializeArrayUsingDateFormatKey(array)
+function getValueFromArray(array)
 {
     var serializableArray = [NSMutableArray new];
 
-    var loop = [array objectEnumerator]
-    while (item = loop.nextObject())
-    {
-        var serializableValue = serializeValueUsingDateFormatKey(item);
+    enumerateArray(array, function(item){
+
+      var serializableValue = getValue(item);
 
         if(serializableValue)
         {
             [serializableArray addObject:serializableValue];
         }
-    }
+
+    })
 
     return serializableArray;
 }
@@ -124,4 +120,9 @@ function isExcludedPropertyName(name)
 {
   var array = [NSArray arrayWithObjects:"transformStruct",nil]
   return [array containsObject:name]
+}
+
+function isJSONReady(value)
+{
+    return [value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]] || (typeof value == "number");
 }
