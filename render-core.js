@@ -317,7 +317,6 @@ function layoutDefinition(layer, varName)
 
     enumerateDict(viewDesc["layout"]["bindings"], function(binding, code){
           var templateValue = evalBindigCode(code, layoutArguments)
-          custom_log(binding + "---" + code + "--" + layoutArguments)
           layoutCode = [layoutCode stringByReplacingOccurrencesOfString:binding withString:templateValue]
       })
 
@@ -434,7 +433,7 @@ function evalBindigCode(scriptCode, scriptArguments)
     }
 
     var parameterString = [[NSString alloc] initWithData:parameterData encoding:4]
-    var script = [scriptCode stringByReplacingOccurrencesOfString:@"<DICT>" withString:parameterString];
+    var script = "var f = function(dict){" + scriptCode +"}; f( " + parameterString + ")"
 
     var returnValue = [webView stringByEvaluatingJavaScriptFromString:script];
 

@@ -11,11 +11,11 @@
     "layout" : {
       "template" : "[<NAME> setFrame:CGRectMake(<X>, <Y>, <WIDTH>, <HEIGHT>)]",
       "bindings" : {
-        "<NAME>" : "var f = function(dict){return dict[\"name\"];}; f(<DICT>)",
-        "<X>" : "var f = function(dict){return Number(dict[\"x\"].toFixed(4))}; f(<DICT>)",
-        "<Y>" : "var f = function(dict){return Number(dict[\"y\"].toFixed(4))}; f(<DICT>)",
-        "<WIDTH>" : "var f = function(dict){return Number(dict[\"width\"].toFixed(4))}; f(<DICT>)",
-        "<HEIGHT>" : "var f = function(dict){return Number(dict[\"height\"].toFixed(4))}; f(<DICT>)"
+        "<NAME>" : "return dict[\"name\"];",
+        "<X>" : "return Number(dict[\"x\"].toFixed(4));",
+        "<Y>" : "return Number(dict[\"y\"].toFixed(4));",
+        "<WIDTH>" : "return Number(dict[\"width\"].toFixed(4));",
+        "<HEIGHT>" : "return Number(dict[\"height\"].toFixed(4));"
       }
     }
   },
@@ -33,11 +33,11 @@
     "layout" : {
       "template" : "[<NAME> setFrame:CGRectMake(<X>, <Y>, <WIDTH>, <HEIGHT>)]",
       "bindings" : {
-        "<NAME>" : "var f = function(dict){return dict[\"name\"];}; f(<DICT>)",
-        "<X>" : "var f = function(dict){return Number(dict[\"x\"].toFixed(4));}; f(<DICT>)",
-        "<Y>" : "var f = function(dict){return Number(dict[\"y\"].toFixed(4));}; f(<DICT>)",
-        "<WIDTH>" : "var f = function(dict){return Number(dict[\"width\"].toFixed(4));}; f(<DICT>)",
-        "<HEIGHT>" : "var f = function(dict){return Number(dict[\"height\"].toFixed(4));}; f(<DICT>)"
+        "<NAME>" : "return dict[\"name\"];",
+        "<X>" : "return Number(dict[\"x\"].toFixed(4));",
+        "<Y>" : "return Number(dict[\"y\"].toFixed(4));",
+        "<WIDTH>" : "return Number(dict[\"width\"].toFixed(4));",
+        "<HEIGHT>" : "return Number(dict[\"height\"].toFixed(4));"
       }
     }
   },
@@ -45,8 +45,8 @@
     "create" : {
       "template" : "[UIFont fontWithName:<NAME> size:<SIZE>]",
       "bindings" : {
-        "<NAME>" : "var f = function(dict){return '@\"' + dict[\"fontName\"] + '\"';}; f(<DICT>)",
-        "<SIZE>" : "var f = function(dict){return Math.ceil(dict[\"pointSize\"]);}; f(<DICT>)"
+        "<NAME>" : "return '@\"' + dict[\"fontName\"] + '\"';",
+        "<SIZE>" : "return Math.ceil(dict[\"pointSize\"]);"
       }
     }
   },
@@ -54,10 +54,10 @@
     "create" : {
       "template" : "[UIColor colorWithRed:<r> green:<g> blue:<b> alpha:<a>]",
       "bindings" : {
-        "<r>" : "var f = function(dict){return Number(dict[\"red\"].toFixed(4));}; f(<DICT>)",
-        "<g>" : "var f = function(dict){return Number(dict[\"green\"].toFixed(4));}; f(<DICT>)",
-        "<b>" : "var f = function(dict){return Number(dict[\"blue\"].toFixed(4));}; f(<DICT>)",
-        "<a>" : "var f = function(dict){return Number(dict[\"alpha\"].toFixed(4));}; f(<DICT>)"
+        "<r>" : "return Number(dict[\"red\"].toFixed(4));",
+        "<g>" : "return Number(dict[\"green\"].toFixed(4));",
+        "<b>" : "return Number(dict[\"blue\"].toFixed(4));",
+        "<a>" : "return Number(dict[\"alpha\"].toFixed(4));"
       }
     }
   },
@@ -65,17 +65,17 @@
     "create" : {
       "template" : "[[UIImageView alloc] initWithImage:[UIImage imageNamed:<NAME>]]",
       "bindings" : {
-        "<NAME>" : "var f = function(dict){return '@\"' + dict[\"name\"] + '\"';}; f(<DICT>)"
+        "<NAME>" : "return '@\"' + dict[\"name\"] + '\"';"
       }
     },
     "layout" : {
       "template" : "[<NAME> setFrame:CGRectMake(<X>, <Y>, <WIDTH>, <HEIGHT>)]",
       "bindings" : {
-        "<NAME>" : "var f = function(dict){return dict[\"name\"];}; f(<DICT>)",
-        "<X>" : "var f = function(dict){return dict[\"x\"];}; f(<DICT>)",
-        "<Y>" : "var f = function(dict){return dict[\"y\"];}; f(<DICT>)",
-        "<WIDTH>" : "var f = function(dict){return dict[\"width\"];}; f(<DICT>)",
-        "<HEIGHT>" : "var f = function(dict){return dict[\"height\"];}; f(<DICT>)"
+        "<NAME>" : "return dict[\"name\"];",
+        "<X>" : "return dict[\"x\"];",
+        "<Y>" : "return dict[\"y\"];",
+        "<WIDTH>" : "return dict[\"width\"];",
+        "<HEIGHT>" : "return dict[\"height\"];"
       }
     },
     "export" : {
@@ -86,7 +86,7 @@
     "create" : {
       "template" : "@\"<string>\"",
       "bindings" : {
-        "<string>" : "var f = function(dict){return dict[\"description\"];}; f(<DICT>)"
+        "<string>" : "return dict[\"description\"];"
       }
     }
   },
@@ -94,7 +94,7 @@
     "create" : {
       "template" : "<identity>",
       "bindings" : {
-        "<identity>" : "var f = function(dict){return dict[\"description\"];}; f(<DICT>)"
+        "<identity>" : "return dict[\"description\"];"
       }
     }
   }
