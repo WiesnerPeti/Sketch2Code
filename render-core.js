@@ -242,6 +242,11 @@ function layoutDefinition(layer, varName)
 {
     var userInfo = [layer userInfo]
 
+    var viewClass = mappedClassNameForLayer(layer)
+    var viewDesc = viewDescriptors[viewClass]
+    var layoutCode = viewDesc[@"layout"][@"template"]
+	var layoutArguments = {}
+
     if(userInfo != nil && userInfo["com.bouchenoiremarc.sketch-constraints"] != nil)
     {
       var constraintString = userInfo["com.bouchenoiremarc.sketch-constraints"]["@constraints"]
@@ -291,30 +296,32 @@ function layoutDefinition(layer, varName)
         }
       }
 
-	  var viewClass = mappedClassNameForLayer(layer)
-      var viewDesc = viewDescriptors[viewClass]
-      var layoutCode = viewDesc[@"layout"][@"template"]
-      var layoutArguments = {
-      	"name" : iVarName(varName),
-      	"x" : x,
-      	"y" : y,
-      	"width" : width,
-      	"height" : height
+      layoutArguments = {
+	      	"name" : iVarName(varName),
+	      	"x" : x,
+	      	"y" : y,
+	      	"width" : width,
+	      	"height" : height
       }
-      enumerateDict(viewDesc["layout"]["bindings"], function(binding, code){
+    }
+    else
+    {
+    	layoutArguments = {
+	      	"name" : iVarName(varName),
+	      	"x" : Math.ceil(layer.frame().x()),
+	      	"y" : Math.ceil(layer.frame().y()),
+	      	"width" : Math.ceil(layer.frame().width()),
+	      	"height" : Math.ceil(layer.frame().height())
+      	}
+    }
+
+    enumerateDict(viewDesc["layout"]["bindings"], function(binding, code){
           var templateValue = evalBindigCode(code, layoutArguments)
           custom_log(binding + "---" + code + "--" + layoutArguments)
           layoutCode = [layoutCode stringByReplacingOccurrencesOfString:binding withString:templateValue]
       })
 
-      return layoutCode + ";"
-    }
-    else
-    {
-      var rect = "CGRectMake(" + Math.ceil(layer.frame().x()) + "," + Math.ceil(layer.frame().y()) + "," + Math.ceil(layer.frame().width()) + ","+ Math.ceil(layer.frame().height()) +")";
-      var layout = iVarName(varName) + " " + "setFrame:" + rect)
-      return messageSendText(layout) + ";"
-    }
+    return layoutCode + ";"
 }
 
 function messageSendText(text)
