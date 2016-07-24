@@ -187,11 +187,11 @@ function configStringDefinitions(layer, varName, propertiesMap)
 {
     var config = [NSMutableArray array]
 
-    enumerateDict(propertiesMap, function(key, propertyname){
+    enumerateDict(propertiesMap, function(propertyName, sketchPropertyName){
 
-      var value = [layer valueForKeyPath:key]
+      var value = [layer valueForKeyPath:sketchPropertyName]
 
-      custom_log("ValyeForKeyPath :" + key + " " + value)
+      custom_log("ValyeForKeyPath :" + sketchPropertyName + " " + value)
 
       if(value == nil)
       {
@@ -222,7 +222,7 @@ function configStringDefinitions(layer, varName, propertiesMap)
         createTemplate = [createTemplate stringByReplacingOccurrencesOfString:binding withString:valueObj]
       })
 
-      configString = "\t" + iVarName(varName) + "." + propertyname + " = " + createTemplate + ";"
+      configString = "\t" + iVarName(varName) + "." + propertyName + " = " + createTemplate + ";"
 
       [config addObject:configString]
     });
