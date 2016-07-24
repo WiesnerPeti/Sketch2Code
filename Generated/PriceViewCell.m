@@ -49,7 +49,7 @@
 	[_priceBarImageView setFrame:CGRectMake(60,22,173,9)];
 	[_priceLabel setFrame:CGRectMake(244,18,28,17)];
 	[_titleLabel setFrame:CGRectMake(9,17,46,17)];
-	[_arrow setFrame:CGRectMake(self.bounds.size.width - 10 - 8,self.bounds.size.height/2.0 - 12/2.0,8,12)];
+	[_arrow setFrame:CGRectMake(self.bounds.size.width - 10 - 8, self.bounds.size.height/2.0 - 12/2.0, 8, 12)];
 
 }
 @end

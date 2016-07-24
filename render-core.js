@@ -211,7 +211,7 @@ function configStringDefinitions(layer, varName, propertiesMap)
       var viewClass = classMapping[valueClass]
       var viewDesc = viewDescriptors[viewClass]
       var createTemplate = viewDesc[@"create"][@"template"]
-      var valueAsDictionary = valueAsDictionary = objectAsDictionary(value)
+      var valueAsDictionary = objectAsDictionary(value)
 
       enumerateDict(viewDesc[@"create"][@"bindings"], function(binding,code){
 
@@ -291,8 +291,23 @@ function layoutDefinition(layer, varName)
         }
       }
 
-      var layout = iVarName(varName) + " " + "setFrame:" + "CGRectMake(" + x + "," + y + "," + width + ","+ height +")"
-      return messageSendText(layout) + ";"
+	  var viewClass = mappedClassNameForLayer(layer)
+      var viewDesc = viewDescriptors[viewClass]
+      var layoutCode = viewDesc[@"layout"][@"template"]
+      var layoutArguments = {
+      	"name" : iVarName(varName),
+      	"x" : x,
+      	"y" : y,
+      	"width" : width,
+      	"height" : height
+      }
+      enumerateDict(viewDesc["layout"]["bindings"], function(binding, code){
+          var templateValue = evalBindigCode(code, layoutArguments)
+          custom_log(binding + "---" + code + "--" + layoutArguments)
+          layoutCode = [layoutCode stringByReplacingOccurrencesOfString:binding withString:templateValue]
+      })
+
+      return layoutCode + ";"
     }
     else
     {
@@ -401,10 +416,10 @@ function mappedClassNameForLayer(layer)
 }
 
 //Evaluates the JS code written for the bindings
-function evalBindigCode(code, parameter)
+function evalBindigCode(scriptCode, scriptArguments)
 {
     var errorPointer = MOPointer.alloc().initWithValue(nil)
-    var parameterData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:errorPointer]
+    var parameterData = [NSJSONSerialization dataWithJSONObject:scriptArguments options:0 error:errorPointer]
 
     if(errorPointer.value())
     {
@@ -412,7 +427,7 @@ function evalBindigCode(code, parameter)
     }
 
     var parameterString = [[NSString alloc] initWithData:parameterData encoding:4]
-    var script = [code stringByReplacingOccurrencesOfString:@"<DICT>" withString:parameterString];
+    var script = [scriptCode stringByReplacingOccurrencesOfString:@"<DICT>" withString:parameterString];
 
     var returnValue = [webView stringByEvaluatingJavaScriptFromString:script];
 

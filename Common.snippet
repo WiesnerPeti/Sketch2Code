@@ -7,6 +7,16 @@
     "properties" :{
       "style.fill.color" : "backgroundColor",
       "layers.firstObject.fixedRadius" : "layer.cornerRadius"
+    },
+    "layout" : {
+      "template" : "[<NAME> setFrame:CGRectMake(<X>, <Y>, <WIDTH>, <HEIGHT>)]",
+      "bindings" : {
+        "<NAME>" : "var f = function(dict){return dict[\"name\"];}; f(<DICT>)",
+        "<X>" : "var f = function(dict){return Number(dict[\"x\"].toFixed(4))}; f(<DICT>)",
+        "<Y>" : "var f = function(dict){return Number(dict[\"y\"].toFixed(4))}; f(<DICT>)",
+        "<WIDTH>" : "var f = function(dict){return Number(dict[\"width\"].toFixed(4))}; f(<DICT>)",
+        "<HEIGHT>" : "var f = function(dict){return Number(dict[\"height\"].toFixed(4))}; f(<DICT>)"
+      }
     }
   },
   "UILabel" : {
@@ -19,6 +29,16 @@
       "stringValue" : "text",
       "font" : "font",
       "style.contextSettings.opacity" : "alpha"
+    },
+    "layout" : {
+      "template" : "[<NAME> setFrame:CGRectMake(<X>, <Y>, <WIDTH>, <HEIGHT>)]",
+      "bindings" : {
+        "<NAME>" : "var f = function(dict){return dict[\"name\"];}; f(<DICT>)",
+        "<X>" : "var f = function(dict){return Number(dict[\"x\"].toFixed(4));}; f(<DICT>)",
+        "<Y>" : "var f = function(dict){return Number(dict[\"y\"].toFixed(4));}; f(<DICT>)",
+        "<WIDTH>" : "var f = function(dict){return Number(dict[\"width\"].toFixed(4));}; f(<DICT>)",
+        "<HEIGHT>" : "var f = function(dict){return Number(dict[\"height\"].toFixed(4));}; f(<DICT>)"
+      }
     }
   },
   "UIFont" : {
@@ -34,7 +54,7 @@
     "create" : {
       "template" : "[UIColor colorWithRed:<r> green:<g> blue:<b> alpha:<a>]",
       "bindings" : {
-        "<r>" : "var f = function(dict){return Number(dict[\"red\"].toFixed(4))}; f(<DICT>)",
+        "<r>" : "var f = function(dict){return Number(dict[\"red\"].toFixed(4));}; f(<DICT>)",
         "<g>" : "var f = function(dict){return Number(dict[\"green\"].toFixed(4));}; f(<DICT>)",
         "<b>" : "var f = function(dict){return Number(dict[\"blue\"].toFixed(4));}; f(<DICT>)",
         "<a>" : "var f = function(dict){return Number(dict[\"alpha\"].toFixed(4));}; f(<DICT>)"
@@ -46,6 +66,16 @@
       "template" : "[[UIImageView alloc] initWithImage:[UIImage imageNamed:<NAME>]]",
       "bindings" : {
         "<NAME>" : "var f = function(dict){return '@\"' + dict[\"name\"] + '\"';}; f(<DICT>)"
+      }
+    },
+    "layout" : {
+      "template" : "[<NAME> setFrame:CGRectMake(<X>, <Y>, <WIDTH>, <HEIGHT>)]",
+      "bindings" : {
+        "<NAME>" : "var f = function(dict){return dict[\"name\"];}; f(<DICT>)",
+        "<X>" : "var f = function(dict){return dict[\"x\"];}; f(<DICT>)",
+        "<Y>" : "var f = function(dict){return dict[\"y\"];}; f(<DICT>)",
+        "<WIDTH>" : "var f = function(dict){return dict[\"width\"];}; f(<DICT>)",
+        "<HEIGHT>" : "var f = function(dict){return dict[\"height\"];}; f(<DICT>)"
       }
     },
     "export" : {
