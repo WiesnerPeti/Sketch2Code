@@ -18,15 +18,15 @@
 	_priceLabel = [UILabel new];
 	_priceLabel.textColor = [UIColor colorWithRed:0.2039 green:0.2118 blue:0.2392 alpha:1];
 	_priceLabel.alpha = 0.7502915111940298;
-	_priceLabel.text = @"$220";
 	_priceLabel.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
+	_priceLabel.text = @"$220";
 
 
 	_titleLabel = [UILabel new];
 	_titleLabel.textColor = [UIColor colorWithRed:0.2039 green:0.2118 blue:0.2392 alpha:1];
 	_titleLabel.alpha = 1;
-	_titleLabel.text = @"Section";
 	_titleLabel.font = [UIFont fontWithName:@"SourceSansPro-Bold" size:14];
+	_titleLabel.text = @"Section";
 
 
 	_arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow"]];
@@ -45,11 +45,11 @@
 {
     [super layoutSubviews];
 
-	[_backgroundView setFrame:CGRectMake(0,1,320,50)];
-	[_priceBarImageView setFrame:CGRectMake(60,22,173,9)];
-	[_priceLabel setFrame:CGRectMake(244,18,28,17)];
-	[_titleLabel setFrame:CGRectMake(9,17,46,17)];
-	[_arrow setFrame:CGRectMake(self.bounds.size.width - 10 - 8,self.bounds.size.height/2.0 - 12/2.0,8,12)];
+	[_backgroundView setFrame:CGRectMake(0, 1, 320, 50)];
+	[_priceBarImageView setFrame:CGRectMake(60, 22, 173, 9)];
+	[_priceLabel setFrame:CGRectMake(244, 18, 28, 17)];
+	[_titleLabel setFrame:CGRectMake(9, 17, 46, 17)];
+	[_arrow setFrame:CGRectMake(self.bounds.size.width - 10 - 8, self.bounds.size.height/2.0 - 12/2.0, 8, 12)];
 
 }
 @end
