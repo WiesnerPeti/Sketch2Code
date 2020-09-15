@@ -2,16 +2,16 @@
 Let's turn Sketch files into code
 :large_orange_diamond: :soon: :page_with_curl:
 
-##Goal
+## Goal
 Create a customizable Sketch plugin that converts a selected layer to a UIKit file with Objective-C code.
 
-##Install
+## Install
 Run the `deploy.sh` script as sudo (Sketch plugins are under the User's Library folder). This script will copy all the plugins and helper files.
 
-##Build and run
+## Build and run
 Run the `run.sh` script as sudo (same reason). This script will run a `deploy.sh`, clear the Console, bring Sketch to focus and execute the plugins shortcut.
 
-##Testing
+## Testing
 You can use the `Template.sketch` file to play with the plugin and the `Sketch2CodeTest` Xcode project to see the view in an iOS environment.
 
 ## Algorithm
@@ -32,11 +32,11 @@ You can use the `Template.sketch` file to play with the plugin and the `Sketch2C
 	5. Create the _layout_ code
 5. Write the interface and implementation file to the given file path
 
-##Contacts
+## Contacts
 @csacsi
 @wiesnerpeti
 
-##Development material
+## Development material
 - Sketch Developer portal: http://developer.sketchapp.com/
 - Sketch class-dump: https://github.com/ryngonzalez/Sketch-Internals
 - Sketch plugin mailing list: http://sketchplugins.com/mailman/listinfo/dev_sketchplugins.com
